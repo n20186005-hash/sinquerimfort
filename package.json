@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "check": "astro check",
     "build": "astro build",
-    "postbuild": "rm -f dist/client/wrangler.json",
+    "postbuild": "node -e \"const fs=require('fs');['dist/client/wrangler.json','.wrangler/deploy/config.json'].forEach(p=>{try{fs.rmSync(p,{force:true})}catch(e){}})\"",
     "preview": "astro preview"
   },
   "dependencies": {
