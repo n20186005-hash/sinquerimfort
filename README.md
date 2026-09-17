@@ -1,6 +1,15 @@
 # Sinquerim Fort / Goa
 
-A single-page Astro + Tailwind CSS + TypeScript visitor guide for Sinquerim Fort (Sinquerim Beach Bastion), Candolim, Goa.
+A bilingual (Hindi default + English) Astro + Tailwind CSS + TypeScript visitor guide for Sinquerim Fort (Sinquerim Beach Bastion), Candolim, Goa.
+
+## Languages
+
+| Route | Language | Notes |
+| --- | --- | --- |
+| `/` | Hindi (`hi-IN`) | default, `x-default` |
+| `/en/` | English | alternate |
+
+Content lives in `src/i18n/hi.ts` (source of the content type) and `src/i18n/en.ts`; `src/layouts/AttractionPage.astro` renders both, and the header/footer carry the language switch plus `hreflang` alternates.
 
 Production domain: `https://sinquerimfort.com` (default `site` in `astro.config.mjs`; override with `PUBLIC_SITE_URL` if needed).
 

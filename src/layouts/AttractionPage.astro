@@ -1,0 +1,115 @@
+---
+import '../styles.css';
+import type { Content, Locale } from '../i18n/types';
+
+declare global { interface Window { dataLayer: unknown[]; } }
+
+interface Props { t: Content; locale: Locale; }
+const { t, locale } = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? '';
+const path = Astro.url.pathname.endsWith('/') ? Astro.url.pathname : `${Astro.url.pathname}/`;
+const canonical = `${siteUrl}${path}`;
+const abs = (p: string) => `${siteUrl}${p}`;
+const otherPath = locale === 'hi' ? '/en/' : '/';
+const otherHref = `${siteUrl}${otherPath}`;
+const isHi = locale === 'hi';
+
+/* ---------- Single-attraction entity binding ---------- */
+const FULL = 'Sinquerim Fort';
+const CITY = 'Candolim';
+const STATE = 'Goa';
+const COUNTRY = 'India';
+const POSTAL = '403515';
+const LAT = 15.498447;
+const LNG = 73.766356;
+const MAPS_SHARE_URL = 'https://maps.app.goo.gl/FjmgmJePsTwafjCB8';
+const MAPS_PLUS_URL = 'https://www.google.com/maps/search/?api=1&query=FQX8%2B9HJ%2C%20Candolim%2C%20Goa%2C%20India';
+const MAPS_EMBED_SRC = 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d4770.890837831076!2d73.7630995!3d15.4980197!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bbfc175c3962cd9%3A0xbf1fbcf792976612!2sSinquerim%20Fort!5e1!3m2!1szh-CN!2s!4v1789637314070!5m2!1szh-CN!2s';
+const GOVT_TOURISM_URL = 'https://www.goatourism.gov.in/';
+
+/* ---------- Google Maps rating snapshot (display only, never in JSON-LD) ---------- */
+const RATING_VALUE = '4.5';
+const RATING_COUNT_LABEL = '20,252';
+const RATING_SYNCED_SHORT = isHi ? 'सितंबर 2026' : 'September 2026';
+
+const hero = '/images/fort-view.jpg';
+const ogLocale = isHi ? 'hi_IN' : 'en_IN';
+const ogLocaleAlt = isHi ? 'en_IN' : 'hi_IN';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'TouristAttraction',
+      '@id': abs('/#attraction'),
+      name: FULL,
+      alternateName: ['Sinquerim Beach Bastion', `${CITY} ${FULL}`, 'सिंकेरिम किला'],
+      description: t.meta.schemaDescription,
+      url: canonical,
+      inLanguage: t.lang,
+      image: [abs(hero)],
+      isAccessibleForFree: true,
+      address: { '@type': 'PostalAddress', streetAddress: 'FQX8+9HJ', addressLocality: CITY, addressRegion: STATE, postalCode: POSTAL, addressCountry: 'IN' },
+      geo: { '@type': 'GeoCoordinates', latitude: LAT, longitude: LNG },
+      hasMap: MAPS_SHARE_URL,
+      openingHoursSpecification: { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], opens: '09:30', closes: '18:00' },
+      sameAs: [MAPS_SHARE_URL, GOVT_TOURISM_URL]
+    },
+    { '@type': 'WebSite', '@id': abs('/#website'), url: canonical, name: t.meta.siteName, inLanguage: t.lang },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: isHi ? 'होम' : 'Home', item: canonical },
+        { '@type': 'ListItem', position: 2, name: FULL }
+      ]
+    },
+    {
+      '@type': 'FAQPage',
+      inLanguage: t.lang,
+      mainEntity: t.faq.items.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } }))
+    }
+  ]
+};
+---
+<!doctype html>
+<html lang={t.lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{t.meta.title}</title>
+  <meta name="description" content={t.meta.description} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang="hi-IN" href={isHi ? canonical : otherHref} />
+  <link rel="alternate" hreflang="en-IN" href={isHi ? otherHref : canonical} />
+  <link rel="alternate" hreflang="x-default" href={isHi ? canonical : otherHref} />
+  <meta property="og:title" content={t.meta.ogTitle} /><meta property="og:description" content={t.meta.ogDescription} /><meta property="og:type" content="website" /><meta property="og:url" content={canonical} /><meta property="og:site_name" content={t.meta.siteName} /><meta property="og:locale" content={ogLocale} /><meta property="og:locale:alternate" content={ogLocaleAlt} /><meta property="og:image" content={abs(hero)} /><meta property="og:image:alt" content={isHi ? 'कैंडोलिम में सिंकेरिम किला' : 'Sinquerim Fort in Candolim'} />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={t.meta.ogTitle} /><meta name="twitter:description" content={t.meta.ogDescription} /><meta name="twitter:image" content={abs(hero)} />
+  <meta name="theme-color" content="#143d4a" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" /><meta name="apple-mobile-web-app-status-bar-style" content="default" /><meta name="apple-mobile-web-app-title" content="Sinquerim" />
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
+  <script is:inline>window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-HXM22WWPKP');</script>
+  {import.meta.env.PROD && <script is:inline>if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); }); }</script>}
+</head>
+<body>
+  <header class="fixed top-0 z-20 w-full mix-blend-multiply"><div class="mx-auto flex max-w-7xl items-center justify-between px-5 py-5 lg:px-10"><a href="#top" class="flex items-center gap-3" aria-label={t.nav.home}><img src="/favicon.svg" alt="" width="38" height="38" /><span class="display text-lg font-bold tracking-tight">sinquerim<span class="text-[#a75238]">/</span>fort</span></a><nav class="hidden items-center gap-7 text-xs font-semibold uppercase tracking-[.15em] md:flex"><a href="#story">{t.nav.story}</a><a href="#reviews">{t.nav.reviews}</a><a href="#visit">{t.nav.visit}</a><a href="#nearby">{t.nav.nearby}</a><a href={otherPath} class="rounded-full border border-[#172126]/25 px-4 py-2" hreflang={isHi ? 'en-IN' : 'hi-IN'} aria-label={t.switchAria} rel="alternate">{t.switchLabel}</a></nav><a href="#map" class="rounded-full bg-[#143d4a] px-5 py-3 text-xs font-bold uppercase tracking-[.14em] text-[#f8f4ec] transition hover:bg-[#a75238]">{t.nav.cta}</a></div></header>
+  <main id="top">
+    <section class="paper-grid relative min-h-[88vh] overflow-hidden px-5 pb-16 pt-36 lg:px-10"><div class="mx-auto grid max-w-7xl items-end gap-10 lg:grid-cols-[.9fr_1.1fr]"><div class="relative z-10 reveal"><nav aria-label="Breadcrumb" class="mono mb-6 text-[10px] uppercase tracking-[.15em] text-[#657174]">{t.hero.breadcrumb}</nav><h1 class="display max-w-3xl text-[clamp(3.2rem,7.6vw,7.5rem)] font-bold leading-[.85]">{t.hero.title1}<br/><em class="font-normal text-[#a75238]">{t.hero.title2}</em><br/><span class="text-[.26em] font-normal tracking-tight text-[#46565a]">{t.hero.title3}</span></h1><p class="display mt-5 text-xl italic text-[#46565a]">{t.hero.tagline}</p><p class="mt-8 max-w-md text-base leading-7 text-[#46565a]">{t.hero.intro}</p><div class="mt-8 flex flex-wrap gap-3"><a href="#visit" class="rounded-full bg-[#a75238] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#143d4a]">{t.hero.ctaPrimary}</a><span class="rounded-full border border-[#172126]/20 px-5 py-3 text-sm">{t.hero.ctaBadge}</span></div><div class="mt-7"><p class="text-sm"><strong class="display text-2xl">{RATING_VALUE}</strong><span class="text-[#657174]"> / 5</span> · <span class="text-[#a75238]" aria-hidden="true">★★★★☆</span> · <strong>{RATING_COUNT_LABEL}</strong> {t.hero.ratingUnit}</p><p class="mt-2 max-w-md text-[11px] leading-5 text-[#657174]">{t.hero.ratingSource} <a class="text-[#a75238] underline decoration-[#a75238]/40" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.hero.ratingLink}</a></p></div><p class="mt-6 text-xs md:hidden"><a class="rounded-full border border-[#172126]/25 px-4 py-2 font-semibold" href={otherPath} hreflang={isHi ? 'en-IN' : 'hi-IN'} rel="alternate" aria-label={t.switchAria}>{t.switchLabel}</a></p></div><figure class="relative lg:-mr-20 reveal" style="animation-delay:.12s"><div class="absolute -left-5 -top-5 h-24 w-24 rounded-full border border-[#a75238]/40"></div><img src={hero} alt={t.meta.heroImageAlt} class="relative aspect-[1.2] w-full object-cover shadow-2xl grayscale-[.1]" /><figcaption class="mt-3 flex justify-between text-[10px] uppercase tracking-[.15em] text-[#657174]"><span>{t.hero.captionLeft}</span><span>{t.hero.captionRight}</span></figcaption></figure></div></section>
+    <section id="story" class="mx-auto grid max-w-7xl gap-12 px-5 py-24 lg:grid-cols-[.8fr_1.2fr] lg:px-10"><div><p class="eyebrow">{t.story.eyebrow}</p><h2 class="display mt-4 text-5xl leading-none lg:text-6xl">{t.story.h2a}<br/><span class="text-[#a75238]">{t.story.h2b}</span></h2></div><div class="max-w-2xl text-lg leading-8 text-[#46565a]"><p>{t.story.p1}</p><p class="mt-6">{t.story.p2}</p><p class="mt-6">{t.story.p3}</p><div class="mt-10 grid grid-cols-2 gap-6 border-t border-[#172126]/15 pt-6 text-sm">{t.story.stats.map((stat) => <div><span class="eyebrow">{stat.label}</span><strong class="mt-2 block text-2xl">{stat.value}</strong>{stat.note && <span class="mt-1 block text-[11px] text-[#657174]">{stat.note}</span>}</div>)}</div></div></section>
+    <section id="reviews" class="border-y border-[#172126]/10 bg-white/60 px-5 py-24 lg:px-10"><div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.85fr_1.15fr]"><div><p class="eyebrow">{t.reviews.eyebrow}</p><h2 class="display mt-4 text-5xl leading-none lg:text-6xl">{t.reviews.h2a}<br/><span class="text-[#a75238]">{t.reviews.h2b}</span></h2><p class="mt-6 max-w-md text-base leading-7 text-[#46565a]">{t.reviews.intro}</p></div><div class="rounded-2xl bg-white/85 p-8 shadow-sm"><div class="flex flex-wrap items-end gap-6"><p class="display text-6xl font-bold leading-none">{RATING_VALUE}<span class="text-2xl font-normal text-[#657174]"> / 5</span></p><div><p class="text-xl text-[#a75238]" aria-hidden="true">★★★★☆</p><p class="mt-1 text-sm text-[#46565a]"><strong>{RATING_COUNT_LABEL}</strong> {t.hero.ratingUnit}</p></div></div><p class="mt-6 text-xs leading-6 text-[#657174]">{t.reviews.source}</p><a class="mt-6 inline-block rounded-full bg-[#143d4a] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.reviews.cta}</a></div></div></section>
+    <section class="bg-[#143d4a] px-5 py-20 text-[#f8f4ec] lg:px-10"><div class="mx-auto grid max-w-7xl gap-5 md:grid-cols-3"><figure class="md:col-span-2"><img src={hero} alt={t.meta.quoteImageAlt} class="h-[28rem] w-full object-cover" loading="lazy" /><figcaption class="mt-3 text-xs text-[#b4c5c3]">{t.quote.caption}</figcaption></figure><div class="flex flex-col justify-end border-l border-[#b4c5c3]/30 pl-6"><p class="eyebrow text-[#d28f69]">{t.quote.eyebrow}</p><p class="display mt-4 text-4xl leading-tight">{t.quote.quote}</p><p class="mt-5 text-sm leading-6 text-[#b4c5c3]">{t.quote.note}</p></div></div></section>
+    <section id="history" class="mx-auto grid max-w-7xl gap-12 px-5 py-24 lg:grid-cols-[.8fr_1.2fr] lg:px-10"><div><p class="eyebrow">{t.history.eyebrow}</p><h2 class="display mt-4 text-5xl leading-none lg:text-6xl">{t.history.h2a}<br/><span class="text-[#a75238]">{t.history.h2b}</span></h2></div><div class="max-w-2xl space-y-6 text-lg leading-8 text-[#46565a]"><p>{t.history.p1}</p><p>{t.history.p2}</p><p>{t.history.p3}</p></div></section>
+    <section id="visit" class="paper-grid px-5 py-24 lg:px-10"><div class="mx-auto max-w-7xl"><p class="eyebrow">{t.visit.eyebrow}</p><h2 class="display mt-3 max-w-3xl text-5xl leading-none lg:text-6xl">{t.visit.h2a}<br/><span class="text-[#a75238]">{t.visit.h2b}</span></h2><div class="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{t.visit.cards.map((card) => <article class="rounded-2xl bg-white/70 p-7"><span class="eyebrow">{card.no}</span><h3 class="mt-5 text-xl font-bold">{card.title}</h3><p class="mt-3 text-sm leading-6 text-[#526064]">{card.text}</p></article>)}</div></div></section>
+    <section id="nearby" class="mx-auto max-w-7xl px-5 py-24 lg:px-10"><div class="grid gap-14 lg:grid-cols-[.75fr_1.25fr]"><div><p class="eyebrow">{t.nearby.eyebrow}</p><h2 class="display mt-3 text-5xl leading-none lg:text-6xl">{t.nearby.h2a}<br/><span class="text-[#a75238]">{t.nearby.h2b}</span></h2><p class="mt-6 max-w-md text-sm leading-6 text-[#657174]">{t.nearby.cluster}</p></div><div class="space-y-0">{t.nearby.items.map((item) => <div class="section-rule flex items-start justify-between gap-6 py-6"><div><h3 class="font-bold">{item.title}</h3><p class="mt-2 max-w-md text-sm leading-6 text-[#657174]">{item.text}</p></div><span class="mono text-xs text-[#a75238]">{item.no}</span></div>)}</div></div></section>
+    <section id="map" class="bg-[#e7dbc7] px-5 py-20 lg:px-10"><div class="mx-auto max-w-7xl"><div class="flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">{t.map.eyebrow}</p><h2 class="display mt-3 text-5xl">{t.map.h2}</h2><p class="mt-3 text-sm text-[#526064]">{t.map.coords}</p><p class="mt-2 text-xs text-[#657174]">{t.map.note} <a class="text-[#a75238] underline decoration-[#a75238]/40" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{t.map.search}</a></p></div><a class="rounded-full bg-[#143d4a] px-6 py-3 text-sm font-bold text-white" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.map.open}</a></div><div class="mt-8 overflow-hidden rounded-2xl bg-[#143d4a] shadow-xl"><iframe title={t.map.iframeTitle} src={MAPS_EMBED_SRC} width="100%" height="450" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div></section>
+    <section class="mx-auto max-w-4xl px-5 py-24 lg:px-10"><p class="eyebrow">{t.faq.eyebrow}</p><h2 class="display mt-3 text-5xl">{t.faq.h2}</h2><div class="mt-10 divide-y divide-[#172126]/15">{t.faq.items.map((item) => <details class="group py-5"><summary class="flex cursor-pointer list-none items-center justify-between gap-5 font-bold">{item.q}<span class="text-2xl font-normal text-[#a75238] transition group-open:rotate-45">+</span></summary><p class="mt-4 max-w-2xl text-sm leading-7 text-[#657174]">{item.a}</p></details>)}</div></section>
+    <section id="sources" class="border-t border-[#172126]/15 bg-white/60 px-5 py-20 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">{t.sources.eyebrow}</p><h2 class="display mt-3 text-4xl leading-tight lg:text-5xl">{t.sources.h2}</h2><ul class="mt-8 divide-y divide-[#172126]/15"><li class="py-5"><p class="font-bold">{t.sources.ratingTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.ratingText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.sources.ratingLink}</a></li><li class="py-5"><p class="font-bold">{t.sources.locationTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.locationText}</p><div class="mt-3 flex flex-wrap gap-4"><a class="mono text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.sources.listingLink}</a><a class="mono text-xs text-[#a75238]" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{t.sources.plusLink}</a></div></li><li class="py-5"><p class="font-bold">{t.sources.officialTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.officialText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={GOVT_TOURISM_URL} target="_blank" rel="noopener noreferrer">{t.sources.officialLink}</a></li><li class="py-5"><p class="font-bold">{t.sources.photoTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.photoText}</p></li></ul></div></section>
+  </main>
+  <footer class="bg-[#172126] px-5 py-10 text-[#dbe1da] lg:px-10"><div class="mx-auto flex max-w-7xl flex-col justify-between gap-6 text-xs md:flex-row"><p>{t.footer.copyright}</p><p class="max-w-md text-[#9aa9a7]">{t.footer.disclaimer}</p><p class="mono text-[#d28f69]">{t.footer.region}</p></div><div class="mx-auto mt-6 flex max-w-7xl flex-wrap gap-5 text-xs"><a class="text-[#d28f69]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.footer.maps}</a><a class="text-[#d28f69]" href={GOVT_TOURISM_URL} target="_blank" rel="noopener noreferrer">{t.footer.tourism}</a><a class="text-[#d28f69]" href="#sources">{t.footer.sources}</a><a class="text-[#d28f69]" href="#reviews">{t.footer.reviews}</a><a class="text-[#d28f69]" href={otherPath} hreflang={isHi ? 'en-IN' : 'hi-IN'} rel="alternate">{t.switchLabel}</a></div><p class="mx-auto mt-8 max-w-7xl text-[10px] leading-5 text-[#72817f]">{t.footer.credit}</p></footer>
+</body>
+</html>
