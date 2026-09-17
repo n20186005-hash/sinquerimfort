@@ -1,0 +1,26 @@
+{
+  "name": "Sinquerim Fort - Candolim, Goa Visitor Guide",
+  "short_name": "Sinquerim",
+  "description": "Visitor guide to Sinquerim Fort, the sea-facing laterite bastion in Candolim, Goa, India: location map, opening details, nearby landmarks and travel tips.",
+  "lang": "en",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f8f4ec",
+  "theme_color": "#143d4a",
+  "categories": ["travel", "navigation"],
+  "icons": [
+    { "src": "/icon-180.svg", "sizes": "180x180", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/favicon-32.svg", "sizes": "32x32", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ],
+  "shortcuts": [
+    { "name": "Plan a visit", "url": "/#visit" },
+    { "name": "Location map", "url": "/#map" },
+    { "name": "Reviews & rating", "url": "/#reviews" }
+  ]
+}
