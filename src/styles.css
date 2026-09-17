@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+:root { --ink:#172126; --sand:#e7dbc7; --terracotta:#a75238; --sea:#143d4a; --foam:#f8f4ec; }
+html { scroll-behavior:smooth; }
+body { margin:0; color:var(--ink); background:var(--foam); font-family:'Manrope', sans-serif; }
+::selection { background:#d28f69; color:#fff; }
+.display { font-family:Georgia, 'Times New Roman', serif; letter-spacing:-.04em; }
+.mono { font-family:'DM Mono', monospace; }
+.paper-grid { background-image:linear-gradient(rgba(23,33,38,.045) 1px, transparent 1px),linear-gradient(90deg,rgba(23,33,38,.045) 1px,transparent 1px); background-size:28px 28px; }
+.eyebrow { color:var(--terracotta); font:500 11px 'DM Mono',monospace; letter-spacing:.18em; text-transform:uppercase; }
+.section-rule { border-top:1px solid rgba(23,33,38,.16); }
+.reveal { animation: rise .7s cubic-bezier(.23,1,.32,1) both; }
+@keyframes rise { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } .reveal { animation:none; } }
