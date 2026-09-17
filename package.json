@@ -1,0 +1,26 @@
+{
+  "name": "sinquerim-fort-goa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.11.1",
+  "engines": { "node": ">=22.13.0 <23" },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "postbuild": "rm -f dist/client/wrangler.json",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "14.3.2",
+    "@astrojs/sitemap": "3.7.4",
+    "astro": "7.3.3",
+    "tailwindcss": "4.3.3",
+    "@tailwindcss/vite": "4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "0.9.10",
+    "typescript": "5.9.3"
+  }
+}
