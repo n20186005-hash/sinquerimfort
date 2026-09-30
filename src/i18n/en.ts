@@ -6,12 +6,12 @@ export const en: Content = {
   switchLabel: 'हिन्दी',
   switchAria: 'हिन्दी में बदलें',
   meta: {
-    title: 'Sinquerim Fort (Candolim, Goa) - Visitor Guide & Location',
+    title: 'Sinquerim Fort Goa - Timings, Entry Fee, History & How to Reach',
     description:
-      'Discover Sinquerim Fort, the sea-facing laterite bastion in Candolim, Goa, India. View the location map, opening details, nearby Aguada Fort & Lighthouse and Candolim Beach, and travel tips.',
-    ogTitle: 'Sinquerim Fort - Candolim Travel Guide',
-    ogDescription: 'Official visitor guide to Sinquerim Fort in Candolim, Goa, India.',
-    schemaDescription: 'Comprehensive visitor guide to Sinquerim Fort in Candolim, Goa, India.',
+      'Plan a visit to Sinquerim Fort in Candolim, Goa. Free entry, open roughly 09:30–18:00, a sunset viewpoint over the Arabian Sea, how to reach from Panaji, and nearby Aguada Fort & Candolim Beach.',
+    ogTitle: 'Sinquerim Fort, Candolim Goa - Timings, Entry Fee & Location',
+    ogDescription: 'Free sea-facing fort in Candolim, Goa: opening hours, how to reach, sunset viewpoint and nearby Aguada Fort & Candolim Beach.',
+    schemaDescription: 'Visitor guide to Sinquerim Fort, the free sea-facing laterite bastion in Candolim, Goa, India: timings, entry fee, history, how to reach and nearby attractions.',
     siteName: 'Sinquerim Fort Visitor Guide',
     heroImageAlt: 'Sinquerim Fort - Main view in Candolim, India',
     quoteImageAlt: 'Sinquerim Fort rampart above the Arabian Sea in Candolim, India'
@@ -43,7 +43,7 @@ export const en: Content = {
     stats: [
       { label: 'Built', value: '1612', note: '' },
       { label: 'Material', value: 'Laterite', note: '' },
-      { label: 'Rating', value: '4.5 / 5', note: '20,252 Google Maps reviews · September 2026' },
+      { label: 'Rating', value: '4.5 / 5', note: '20,308 Google Maps reviews · September 2026' },
       { label: 'Stay', value: '45–90 min', note: '' }
     ]
   },
@@ -114,7 +114,11 @@ export const en: Content = {
       { q: 'How long should I spend here?', a: 'Allow 45–90 minutes for the bastion, beach walk and photographs. Add more time if pairing it with Aguada Fort.' },
       { q: 'What is the best time to arrive?', a: 'Early morning is cooler and quieter; late afternoon gives softer light over the laterite walls and the Arabian Sea.' },
       { q: 'What is there to see near Sinquerim Fort?', a: 'Within a short drive you can reach Aguada Fort & Lighthouse, Candolim Beach and, across the Mandovi estuary, Reis Magos Fort.' },
-      { q: 'How do I get to Sinquerim Fort from Panaji?', a: 'Head north on NH 66 toward Candolim, then follow signs for Sinquerim Beach / Aguada Fort. Taxis, rented scooters and ride-hailing all work; scooters are easier to park in peak season.' }
+      { q: 'How do I get to Sinquerim Fort from Panaji?', a: 'Head north on NH 66 toward Candolim, then follow signs for Sinquerim Beach / Aguada Fort. Taxis, rented scooters and ride-hailing all work; scooters are easier to park in peak season.' },
+      { q: 'Is Sinquerim Fort a good sunset and photography spot?', a: 'Yes. The sea-facing bastion and causeway look straight out over the Arabian Sea, so late afternoon gives soft light on the laterite walls and a wide sunset view. It is a popular viewpoint for photographs of the coast, Candolim Beach and the Aguada headland.' },
+      { q: 'What is the best season to visit Sinquerim Fort?', a: 'October to March is the most comfortable window, with cooler, drier days and clearer light. The fort stays open through the southwest monsoon (roughly June–September), but the ramparts get slippery after rain, so go carefully and keep to the causeway.' },
+      { q: 'Which other forts in North Goa are near Sinquerim Fort?', a: 'Aguada Fort & Lighthouse sits just above the bastion, and Reis Magos Fort lies across the Mandovi estuary. Together with Sinquerim they form the best-known fort cluster in North Goa, all within a short drive of Candolim.' },
+      { q: 'Is Sinquerim Fort the same as Candolim Fort?', a: 'Travellers sometimes call the sea-facing bastion “Candolim Fort” because it sits on Candolim Beach, but the official name is Sinquerim Fort. It is the lower, shore-side work of the larger Aguada defensive complex.' }
     ]
   },
   sources: {
