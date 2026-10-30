@@ -1,0 +1,6 @@
+---
+interface Props { hi:boolean; dark?:boolean }
+const {hi,dark=false}=Astro.props;
+---
+<p class:list={['photo-credit',{'photo-credit-dark':dark}]}><a href="https://commons.wikimedia.org/wiki/File:Sinquerim_Fort_view_point,_Aguada.jpg">Sinquerim Fort view point, Aguada</a> · <a href="https://commons.wikimedia.org/wiki/User:I.Mahesh">iMahesh / I.Mahesh</a> · <time datetime="2024-08-09">2024-08-09</time> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a><span class="block">{hi?'छोटी WebP प्रतियाँ और CSS फ्रेम; अनुकूलित प्रस्तुति भी इसी लाइसेंस में है। ऐतिहासिक फोटो वर्तमान प्रवेश, सुरक्षा या फोटो-अनुमति नहीं बताता।':'Resized WebP versions and CSS framing; adapted presentation remains under the same licence. Historic photograph, not evidence of current access, safety or photography permission.'}</span></p>
+<style>.photo-credit{font-size:.73rem;line-height:1.9;overflow-wrap:anywhere;margin-top:.75rem;color:#46565a}.photo-credit a{text-decoration:underline;text-underline-offset:.15em}.photo-credit-dark{color:#cbd8d7}</style>

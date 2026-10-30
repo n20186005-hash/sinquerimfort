@@ -1,150 +1,242 @@
 import type { Content } from './types';
 
 export const en: Content = {
-  locale: 'en',
-  lang: 'en',
-  switchLabel: 'हिन्दी',
-  switchAria: 'हिन्दी में बदलें',
-  meta: {
-    title: 'Sinquerim Fort Goa - Timings, Entry Fee, History & How to Reach',
-    description:
-      'Plan a visit to Sinquerim Fort in Candolim, Goa. Free entry, open roughly 09:30–18:00, a sunset viewpoint over the Arabian Sea, how to reach from Panaji, and nearby Aguada Fort & Candolim Beach.',
-    ogTitle: 'Sinquerim Fort, Candolim Goa - Timings, Entry Fee & Location',
-    ogDescription: 'Free sea-facing fort in Candolim, Goa: opening hours, how to reach, sunset viewpoint and nearby Aguada Fort & Candolim Beach.',
-    schemaDescription: 'Visitor guide to Sinquerim Fort, the free sea-facing laterite bastion in Candolim, Goa, India: timings, entry fee, history, how to reach and nearby attractions.',
-    siteName: 'Sinquerim Fort Visitor Guide',
-    heroImageAlt: 'Sinquerim Fort - Main view in Candolim, India',
-    quoteImageAlt: 'Sinquerim Fort rampart above the Arabian Sea in Candolim, India'
+  "locale": "en",
+  "lang": "en",
+  "switchLabel": "हिन्दी",
+  "switchAria": "हिन्दी में बदलें",
+  "meta": {
+    "title": "Sinquerim Fort: Lower Aguada, Hours & Access | Independent Guide",
+    "description": "Identify the lower shore-side Sinquerim Fort in Candolim. Compare the dated 24-hour Maps listing with unconfirmed manager hours, check fees and distinguish upper Fort Aguada.",
+    "ogTitle": "Sinquerim Fort: Lower Aguada, Hours & Access | Independent Guide",
+    "ogDescription": "Identify the lower shore-side Sinquerim Fort in Candolim. Compare the dated 24-hour Maps listing with unconfirmed manager hours, check fees and distinguish upper Fort Aguada.",
+    "schemaDescription": "Independent visitor guide to the lower shore-side Aguada fortification at Sinquerim, distinct from the hilltop fort; current hours and fees need confirmation.",
+    "siteName": "Sinquerim Fort Visitor Guide",
+    "heroImageAlt": "Lower Aguada / Sinquerim sea-facing fortification, historic photograph 9 August 2024",
+    "quoteImageAlt": "Lower Aguada / Sinquerim sea-facing fortification, historic photograph 9 August 2024"
   },
-  nav: { story: 'The story', reviews: 'Reviews', visit: 'Plan a visit', nearby: 'Nearby', cta: 'Find the fort ↗', home: 'Sinquerim Fort home' },
-  hero: {
-    breadcrumb: 'Sinquerim Fort → Candolim → Goa → India',
-    title1: 'Sinquerim',
-    title2: 'Fort',
-    title3: '(Candolim, Goa · India)',
-    tagline: 'Where laterite stone meets the Arabian Sea tide.',
-    intro:
-      'Welcome to Sinquerim Fort, widely recognized as the Sinquerim Beach Bastion. Located on the shoreline of Candolim, Goa, India, this sea-facing bastion is a primary stop for travellers reading the North Goa coast.',
-    ctaPrimary: 'Plan your pause ↓',
-    ctaBadge: 'Free to explore · daylight',
-    ratingUnit: 'Google Maps reviews',
-    ratingSource: 'Rating & review count synced from Google Maps user reviews · September 2026 ·',
-    ratingLink: 'View all reviews on Google Maps ↗',
-    captionLeft: 'Lower Aguada Fort / Sinquerim Beach',
-    captionRight: '01 / 04'
+  "nav": {
+    "story": "The story",
+    "reviews": "Reviews",
+    "visit": "Plan a visit",
+    "nearby": "Nearby",
+    "cta": "Find the fort ↗",
+    "home": "Sinquerim Fort home"
   },
-  story: {
-    eyebrow: 'A small bastion, a wide horizon',
-    h2a: 'About Sinquerim Fort',
-    h2b: 'read the coast in layers.',
-    p1: 'Welcome to Sinquerim Fort, widely recognized as the Sinquerim Beach Bastion. Located in Candolim, Goa, India, this destination serves as a quiet hub for travellers visiting the region — the place where the Aguada defence line meets the open sea.',
-    p2: 'Built by the Portuguese in 1612 as part of the Aguada defensive complex, the lower fort once watched the mouth of the Mandovi River. Today its curved wall and causeway make a quiet lookout over Sinquerim, Candolim, Calangute and Baga.',
-    p3: 'Come for the architecture, stay for the changing light: warm laterite after rain, bright fishing boats at noon, and a horizon that turns copper before dusk.',
-    stats: [
-      { label: 'Built', value: '1612', note: '' },
-      { label: 'Material', value: 'Laterite', note: '' },
-      { label: 'Rating', value: '4.5 / 5', note: '20,308 Google Maps reviews · September 2026' },
-      { label: 'Stay', value: '45–90 min', note: '' }
+  "hero": {
+    "breadcrumb": "Sinquerim Fort → Candolim → Goa → India",
+    "title1": "Sinquerim",
+    "title2": "Fort",
+    "title3": "(Lower Aguada · Candolim, Goa)",
+    "tagline": "Where laterite stone meets the Arabian Sea tide.",
+    "intro": "This guide covers the lower shore-side fortification near Sinquerim Beach. Do not treat the hilltop Fort Aguada, lighthouse or former prison as sharing this site’s entrance or timetable.",
+    "ctaPrimary": "Plan your pause ↓",
+    "ctaBadge": "Confirm hours and fees",
+    "ratingUnit": "Google Maps reviews",
+    "ratingSource": "Third-party Google Maps snapshot · checked 29 October 2026 ·",
+    "ratingLink": "View all reviews on Google Maps ↗",
+    "captionLeft": "Lower Aguada Fort / Sinquerim Beach",
+    "captionRight": "Historic photograph · 2024"
+  },
+  "story": {
+    "eyebrow": "A small bastion, a wide horizon",
+    "h2a": "About Sinquerim Fort",
+    "h2b": "read the coast in layers.",
+    "p1": "Sinquerim Fort commonly refers to the lower shore-side Aguada works in Candolim. ASI’s protected-monument list names “Fortification Wall of Auguda Fortress (Lower)” at Candolim, distinguishing this identity from the hilltop fort.",
+    "p2": "GTDC describes Aguada’s sea-level works and hilltop citadel separately and distinguishes their approaches. That historical description does not confirm that every path or wall is currently open.",
+    "p3": "Observe the stonework, sea and changing light from a permitted safe route. Where people stand in a historic photograph is not evidence of safe or permitted access; current signs and staff instructions take priority.",
+    "stats": [
+      {
+        "label": "Identity",
+        "value": "Lower Aguada",
+        "note": "Distinct ASI listing"
+      },
+      {
+        "label": "Location",
+        "value": "Candolim",
+        "note": "Goa, India"
+      },
+      {
+        "label": "Rating",
+        "value": "4.5 / 5",
+        "note": "20,444 Google Maps reviews · 29 October 2026"
+      },
+      {
+        "label": "Hours",
+        "value": "Unconfirmed by manager",
+        "note": "Maps 24-hour snapshot is separate"
+      }
     ]
   },
-  reviews: {
-    eyebrow: 'Visitor sentiment',
-    h2a: 'Sinquerim Fort reviews',
-    h2b: '& rating',
-    intro:
-      'This is an unofficial guide. The score and review total are quoted from the Google Maps listing for Sinquerim Fort; the reviews themselves stay on Google and are not reproduced here.',
-    source:
-      'Synced from Google Maps user reviews, last synced September 2026; copyright belongs to the original authors and Google Maps. Shown on this page for reference only — the rating is not published in this site’s structured data.',
-    cta: 'View all reviews on Google Maps ↗'
+  "reviews": {
+    "eyebrow": "Visitor sentiment",
+    "h2a": "Sinquerim Fort reviews",
+    "h2b": "& rating",
+    "intro": "This is an unofficial guide. The score and review total are quoted from the Google Maps listing for Sinquerim Fort; the reviews themselves stay on Google and are not reproduced here.",
+    "source": "Google Maps showed 4.5 / 5 from 20,444 reviews on 29 October 2026. This guide did not collect the reviews and does not reproduce their text. Figures can change; there is no automatic synchronization here.",
+    "cta": "View all reviews on Google Maps ↗"
   },
-  quote: {
-    eyebrow: 'The quiet rule',
-    quote: 'Let the wall stay between you and the sea.',
-    note: 'The masonry is unguarded in places. Stay on the causeway, keep back from edges and leave the beach as you found it.',
-    caption: 'The view from the fort’s edge — CC BY-SA 4.0, iMahesh / Wikimedia Commons.'
+  "quote": {
+    "eyebrow": "The quiet rule",
+    "quote": "Let the wall stay between you and the sea.",
+    "note": "Surf, large waves and wet stone can create hazards. Do not cross barriers or climb the walls; keep a safe distance from exposed sea edges.",
+    "caption": "Historic photograph, not confirmation of current access."
   },
-  history: {
-    eyebrow: '1612 → today',
-    h2a: 'History & significance',
-    h2b: 'of Sinquerim Fort',
-    p1: 'Sinquerim Fort was raised by the Portuguese in 1612 as the lower, sea-facing work of the Aguada defensive complex. Standing at the mouth of the Mandovi River, it watched the anchorage and the shore road that supplied the settlements of northern Goa.',
-    p2: 'Its significance is in the setting rather than the scale: a short laterite curtain wall, a causeway and a bastion that put cannon within range of the sea lane. Together with the upper fort and the lighthouse it forms the clearest surviving reading of how Goa’s coastline was defended.',
-    p3: 'Today the site is valued as public open space — an unhurried viewpoint where military architecture, fishing boats and the Arabian Sea share the same horizon.'
+  "history": {
+    "eyebrow": "Distinct layers of Aguada",
+    "h2a": "History & significance",
+    "h2b": "of Sinquerim Fort",
+    "p1": "GTDC describes Aguada as a Portuguese defensive complex. The hilltop citadel and lower sea-level works had different roles; the history of the whole complex is not an independently established construction date for every wall.",
+    "p2": "ASI names the lower fortification at Candolim. GTDC discusses the hilltop fort, sea-level walls, lighthouse and jail separately; do not apply the opening time or price of one to another.",
+    "p3": "A visit depends on current local access rules and sea conditions. State beach-tourism descriptions are not a promise of night access or confirmation that a water-sports provider is currently authorized or operating."
   },
-  visit: {
-    eyebrow: 'Make it a good visit',
-    h2a: 'Location & how to visit Sinquerim Fort in Candolim',
-    h2b: 'practical notes for the tide line.',
-    cards: [
-      { no: '01 / Access', title: 'Getting here', text: 'From Panaji, take a taxi or rental scooter north on NH 66 toward Candolim, then follow signs for Sinquerim Beach / Aguada Fort. The nearest useful landmark is the lower Aguada complex.' },
-      { no: '02 / Timing', title: 'Light over crowds', text: 'Aim for early morning or the last two hours before sunset. Plan around 45–90 minutes; add time for the beach and upper Aguada Fort. The fort area is generally visited in daylight.' },
-      { no: '03 / Cost', title: 'Tickets & fees', text: 'The bastion is commonly treated as a free outdoor viewpoint. Fees and access rules for the wider Aguada complex can vary, so check on arrival before planning a paid visit.' },
-      { no: '04 / Parking', title: 'Leave the keys nearby', text: 'Use marked parking near the Aguada / Sinquerim approach where available. Do not block beach access, residential lanes or the fort causeway; scooters are easier than large cars in peak hours.' },
-      { no: '05 / Food', title: 'Eat around Candolim', text: 'Pair the walk with Goan fish curry, poi bread, prawn balchão or a chilled kokum drink at the beach shacks and Candolim restaurants. Ask for the catch of the day rather than choosing by menu alone.' },
-      { no: '06 / Carry', title: 'Small kit, better view', text: 'Bring water, sun protection, shoes with grip and a light layer for the sea breeze. Avoid climbing the walls; the stone is beautiful because it has survived the weather.' }
+  "visit": {
+    "eyebrow": "Make it a good visit",
+    "h2a": "Location & how to visit Sinquerim Fort in Candolim",
+    "h2b": "practical notes for the tide line.",
+    "cards": [
+      {
+        "no": "01 / Access",
+        "title": "Getting here",
+        "text": "Choose the mapped lower shore-side Sinquerim site, not simply hilltop Fort Aguada. Confirm the currently open entrance, lawful drop-off and return meeting with your driver."
+      },
+      {
+        "no": "02 / Timing",
+        "title": "Which site’s hours?",
+        "text": "Google Maps showed 24-hour access on 29 October 2026, but current manager-confirmed hours for the lower Sinquerim site have not been established. GTDC’s 09:30–18:00 timetable is for the hilltop Fort Aguada, not this lower site. Confirm the actual entrance and day’s access before travelling."
+      },
+      {
+        "no": "03 / Cost",
+        "title": "Confirm the actual tariff",
+        "text": "No current official tariff for the lower Sinquerim site was established. This guide cannot promise free admission; ask the site manager. The upper fort, lighthouse, museum and private activities are separate destinations or services."
+      },
+      {
+        "no": "04 / Parking",
+        "title": "Leave the keys nearby",
+        "text": "Use only currently permitted parking or drop-off. Keep beach and residential access clear; no vehicle access or parking availability is guaranteed here."
+      },
+      {
+        "no": "05 / Food",
+        "title": "Eat around Candolim",
+        "text": "When looking for food in Candolim, ask about current availability, ingredients and your dietary needs. No shop, shack or dish is currently verified by this guide."
+      },
+      {
+        "no": "06 / Carry",
+        "title": "Small kit, better view",
+        "text": "Carry water, sun protection and shoes with grip. Keep back in rough sea conditions and follow current warnings and barriers."
+      }
     ]
   },
-  nearby: {
-    eyebrow: 'Build a half-day',
-    h2a: 'Landmarks & attractions',
-    h2b: 'around Sinquerim Fort',
-    cluster: 'When visiting Sinquerim Fort, visitors can easily explore surrounding historical landmarks and points of interest, including Aguada Fort & Lighthouse and Candolim Beach.',
-    items: [
-      { title: 'Aguada Fort & Lighthouse', text: 'The upper chapter of the same coastal defense story, with wide Mandovi views and a distinct lighthouse silhouette.', no: '01' },
-      { title: 'Candolim Beach', text: 'Follow the sand north for a softer, busier stretch of coast with sunset shacks, water sports and seafood.', no: '02' },
-      { title: 'Reis Magos Fort', text: 'Across the river, another restored fort adds a quieter counterpoint to the Aguada shoreline.', no: '03' }
+  "nearby": {
+    "eyebrow": "Build a half-day",
+    "h2a": "Landmarks & attractions",
+    "h2b": "around Sinquerim Fort",
+    "cluster": "These are separate destinations. Check each entrance, route, timetable and fee; do not assume a short walk or shared ticket.",
+    "items": [
+      {
+        "title": "Aguada Fort & Lighthouse",
+        "text": "GTDC publishes 09:30–18:00 for the hilltop Fort Aguada. Check the lighthouse and former prison separately; this is not the lower Sinquerim timetable.",
+        "no": "01"
+      },
+      {
+        "title": "Candolim Beach",
+        "text": "A separate beach destination; check the day’s warnings, safe access and any activity operator’s authorization.",
+        "no": "02"
+      },
+      {
+        "title": "Reis Magos Fort",
+        "text": "A separate fort destination. Check its journey, opening schedule and ticket independently; no fixed travel time is promised.",
+        "no": "03"
+      }
     ]
   },
-  map: {
-    eyebrow: 'Coordinates, not guesswork',
-    h2: 'Find Sinquerim Fort.',
-    coords: 'FQX8+9HJ, Candolim, Goa 403515, India · 15.498447, 73.766356',
-    note: 'Map data © Google.',
-    search: 'Search FQX8+9HJ, Candolim on Google Maps ↗',
-    open: 'Open in Google Maps ↗',
-    iframeTitle: 'Google Maps location for Sinquerim Fort'
+  "map": {
+    "eyebrow": "Coordinates, not guesswork",
+    "h2": "Find Sinquerim Fort.",
+    "coords": "Candolim, Goa, India · 15.498447, 73.766356",
+    "note": "The map pin does not confirm parking or an open entrance. Map data © Google.",
+    "search": "Search FQX8+9HJ, Candolim on Google Maps ↗",
+    "open": "Open in Google Maps ↗",
+    "iframeTitle": "Google Maps location for Sinquerim Fort"
   },
-  faq: {
-    eyebrow: 'A few clear answers',
-    h2: 'Sinquerim Fort FAQ',
-    items: [
-      { q: 'Where is Sinquerim Fort located?', a: 'Sinquerim Fort is located in Candolim, Goa, India, on the shoreline below Aguada Fort at Plus Code FQX8+9HJ (15.498447, 73.766356).' },
-      { q: 'Is Sinquerim Fort free to visit?', a: 'Yes, the sea-facing bastion is a public space and is generally free to view in daylight. Any paid access nearby belongs to other parts of the Aguada complex and may change.' },
-      { q: 'What are the opening hours of Sinquerim Fort?', a: 'The bastion is an open-air site usually visited between roughly 09:30 and 18:00. Hours are not formally ticketed, so confirm locally before an early or late visit.' },
-      { q: 'How long should I spend here?', a: 'Allow 45–90 minutes for the bastion, beach walk and photographs. Add more time if pairing it with Aguada Fort.' },
-      { q: 'What is the best time to arrive?', a: 'Early morning is cooler and quieter; late afternoon gives softer light over the laterite walls and the Arabian Sea.' },
-      { q: 'What is there to see near Sinquerim Fort?', a: 'Within a short drive you can reach Aguada Fort & Lighthouse, Candolim Beach and, across the Mandovi estuary, Reis Magos Fort.' },
-      { q: 'How do I get to Sinquerim Fort from Panaji?', a: 'Head north on NH 66 toward Candolim, then follow signs for Sinquerim Beach / Aguada Fort. Taxis, rented scooters and ride-hailing all work; scooters are easier to park in peak season.' },
-      { q: 'Is Sinquerim Fort a good sunset and photography spot?', a: 'Yes. The sea-facing bastion and causeway look straight out over the Arabian Sea, so late afternoon gives soft light on the laterite walls and a wide sunset view. It is a popular viewpoint for photographs of the coast, Candolim Beach and the Aguada headland.' },
-      { q: 'What is the best season to visit Sinquerim Fort?', a: 'October to March is the most comfortable window, with cooler, drier days and clearer light. The fort stays open through the southwest monsoon (roughly June–September), but the ramparts get slippery after rain, so go carefully and keep to the causeway.' },
-      { q: 'Which other forts in North Goa are near Sinquerim Fort?', a: 'Aguada Fort & Lighthouse sits just above the bastion, and Reis Magos Fort lies across the Mandovi estuary. Together with Sinquerim they form the best-known fort cluster in North Goa, all within a short drive of Candolim.' },
-      { q: 'Is Sinquerim Fort the same as Candolim Fort?', a: 'Travellers sometimes call the sea-facing bastion “Candolim Fort” because it sits on Candolim Beach, but the official name is Sinquerim Fort. It is the lower, shore-side work of the larger Aguada defensive complex.' }
+  "faq": {
+    "eyebrow": "A few clear answers",
+    "h2": "Sinquerim Fort FAQ",
+    "items": [
+      {
+        "q": "Where is Sinquerim Fort located?",
+        "a": "The lower shore-side Aguada / Sinquerim works are at Candolim, Goa, India. A map pin does not establish a currently open entrance or parking."
+      },
+      {
+        "q": "Is Sinquerim Fort free to visit?",
+        "a": "No current official tariff for the lower Sinquerim site was established. This guide cannot promise free admission; ask the site manager. The upper fort, lighthouse, museum and private activities are separate destinations or services."
+      },
+      {
+        "q": "What are the opening hours of Sinquerim Fort?",
+        "a": "Google Maps showed 24-hour access on 29 October 2026, but current manager-confirmed hours for the lower Sinquerim site have not been established. GTDC’s 09:30–18:00 timetable is for the hilltop Fort Aguada, not this lower site. Confirm the actual entrance and day’s access before travelling."
+      },
+      {
+        "q": "How long should I spend here?",
+        "a": "Keep time flexible for your group, access and sea conditions. This guide has not measured a fixed walking route or duration."
+      },
+      {
+        "q": "What is the best time to arrive?",
+        "a": "Visit only within confirmed safe access. Light or sunset is not permission to remain at night; check sea conditions and local warnings."
+      },
+      {
+        "q": "What is there to see near Sinquerim Fort?",
+        "a": "Treat upper Fort Aguada, the lighthouse, the beaches and Reis Magos as separate destinations with their own journeys and access."
+      },
+      {
+        "q": "How do I get to Sinquerim Fort from Panaji?",
+        "a": "Show your driver the lower shore-side Sinquerim destination and agree the current entrance and return. No highway route, bus, app availability or fixed journey time is verified here."
+      },
+      {
+        "q": "Is Sinquerim Fort a good sunset and photography spot?",
+        "a": "The historic photograph shows the sea-facing wall, not current access or camera permission. Ask before photographing people and do not cross barriers."
+      },
+      {
+        "q": "What is the best season to visit Sinquerim Fort?",
+        "a": "Check the actual forecast and marine warnings. No monsoon opening is promised; wet stone, surf and local restrictions may prevent a visit."
+      },
+      {
+        "q": "Which other forts in North Goa are near Sinquerim Fort?",
+        "a": "The hilltop Fort Aguada and Reis Magos are separate sites; confirm each route, timetable and ticket."
+      },
+      {
+        "q": "Is Sinquerim Fort the same as Candolim Fort?",
+        "a": "Traveller spellings vary, but ASI lists the lower Aguada fortification at Candolim distinctly. Do not treat the whole beach, hilltop fort or former prison as interchangeable names."
+      },
+      {
+        "q": "Is Sinquerim Fort the same as upper Fort Aguada?",
+        "a": "No. This guide covers the lower shore-side works. GTDC distinguishes the hilltop citadel and sea-level walls; the upper 09:30–18:00 schedule has not been applied here."
+      }
     ]
   },
-  sources: {
-    eyebrow: 'Sources & attribution',
-    h2: 'Where this information comes from',
-    ratingTitle: 'Ratings & reviews · synced September 2026',
-    ratingText: 'Synced from Google Maps user reviews, last synced September 2026; copyright belongs to the original authors and Google Maps. Displayed on this page for reference only and not included in this site’s structured data.',
-    ratingLink: 'View all reviews on Google Maps ↗',
-    locationTitle: 'Location & map data',
-    locationText: 'Google Maps listing and Plus Code FQX8+9HJ, Candolim, Goa 403515, India (15.498447, 73.766356). Map data © Google.',
-    listingLink: 'Google Maps listing ↗',
-    plusLink: 'Search by Plus Code ↗',
-    officialTitle: 'Official tourism information',
-    officialText: 'For official updates and regional tourism information, visit the Goa state tourism portal.',
-    officialLink: 'India / Goa Official Tourism Portal ↗',
-    photoTitle: 'Photography',
-    photoText: 'Hero photograph: iMahesh, “Sinquerim Fort view point, Aguada”, CC BY-SA 4.0 via Wikimedia Commons.'
+  "sources": {
+    "eyebrow": "Sources & attribution",
+    "h2": "Where this information comes from",
+    "ratingTitle": "Maps snapshot · 29 October 2026",
+    "ratingText": "Google Maps showed 4.5 / 5 from 20,444 reviews on 29 October 2026. This guide did not collect the reviews and does not reproduce their text. Figures can change; there is no automatic synchronization here.",
+    "ratingLink": "View all reviews on Google Maps ↗",
+    "locationTitle": "Location & map data",
+    "locationText": "Candolim, Goa, India · 15.498447, 73.766356 · The map pin does not confirm parking or an open entrance. Map data © Google.",
+    "listingLink": "Google Maps listing ↗",
+    "plusLink": "Search by Plus Code ↗",
+    "officialTitle": "Official tourism information",
+    "officialText": "GTDC’s Fort Aguada page distinguishes the hilltop fort from lower sea-level works. Read the schedule’s scope carefully; lower-site access remains unconfirmed by a manager.",
+    "officialLink": "GTDC: Fort Aguada and site scope",
+    "photoTitle": "Photography",
+    "photoText": "Photograph by iMahesh / I.Mahesh, 9 August 2024, CC BY-SA 4.0. Exact source and licence are beside each display; smaller WebP versions and CSS framing are used here."
   },
-  footer: {
-    copyright: '© Sinquerim / Fort field guide',
-    disclaimer: 'Unofficial visitor guide. Conditions, access and local fees may change; confirm on the ground before travelling.',
-    region: 'GOA / INDIA',
-    maps: 'Google Maps ↗',
-    tourism: 'Goa Tourism Portal ↗',
-    sources: 'Sources & attribution',
-    reviews: 'Reviews & rating',
-    credit: 'Photo: iMahesh, “Sinquerim Fort view point, Aguada”, CC BY-SA 4.0 via Wikimedia Commons. Rating and review count synced from Google Maps user reviews (September 2026); copyright belongs to the original authors and Google Maps. Additional visual references are credited to their respective photographers where used.'
+  "footer": {
+    "copyright": "© Sinquerim / Fort field guide",
+    "disclaimer": "Independent noncommercial tourism and cultural guide, not the official manager or a ticket service. Confirm access, sea conditions and charges.",
+    "region": "GOA / INDIA",
+    "maps": "Google Maps ↗",
+    "tourism": "Goa Tourism Portal ↗",
+    "sources": "Sources & attribution",
+    "reviews": "Reviews & rating",
+    "credit": "Historic photograph: iMahesh, CC BY-SA 4.0; exact source and licence above. Third-party Maps snapshots do not update automatically."
   }
 };

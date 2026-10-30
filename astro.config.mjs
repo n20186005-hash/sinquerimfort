@@ -9,6 +9,6 @@ export default defineConfig({
   site,
   output: 'static',
   adapter: cloudflare({ imageService: 'compile' }),
-  integrations: site ? [sitemap()] : [],
+  integrations: site ? [sitemap({filter:url=>!/^\/(?:404|offline)(?:\/|\.html)?$/.test(new URL(url).pathname)})] : [],
   vite: { plugins: [tailwindcss()] }
 });

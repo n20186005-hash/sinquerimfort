@@ -1,0 +1,5 @@
+/sw.js
+  Cache-Control: no-cache
+
+/offline.html
+  X-Robots-Tag: noindex
