@@ -29,6 +29,23 @@ export interface Topic {
   related: string[];
   sources: string[];
   featured?: boolean;
+  detail?: AttractionDetail;
+}
+
+export interface AttractionDetail {
+  tagline?: string;
+  hoursLabel?: string;
+  ticketLabel?: string;
+  highlights?: string[];
+  about?: string;
+  tips?: string[];
+  transport?: string;
+  transportBullets?: string[];
+  charms?: { history?: string; architecture?: string; culture?: string; experience?: string };
+  routeSteps?: string[];
+  photoSpots?: string[];
+  stayTips?: string;
+  goodToKnow?: string[];
 }
 
 export const GROUP_ORDER: TopicGroup[] = ['visit', 'transport', 'nearby', 'stories'];

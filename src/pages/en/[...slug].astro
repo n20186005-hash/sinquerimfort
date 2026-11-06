@@ -1,5 +1,6 @@
 ---
 import TopicLayout from '../../layouts/TopicLayout.astro';
+import AttractionGuide from '../../layouts/AttractionGuide.astro';
 import { TOPICS } from '../../data/topics';
 import type { Topic } from '../../data/topic-types';
 
@@ -10,4 +11,4 @@ export function getStaticPaths() {
 const { topic } = Astro.props as { topic: Topic };
 ---
 
-<TopicLayout topic={topic} />
+{topic.schema === 'attraction' ? <AttractionGuide topic={topic} /> : <TopicLayout topic={topic} />}

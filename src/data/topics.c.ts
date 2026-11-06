@@ -78,6 +78,56 @@ export const TOPICS_C: Topic[] = [
     batch: 2,
     priority: 'P1',
     schema: 'attraction',
+    detail: {
+      tagline: 'The hilltop citadel above Sinquerim, with its lighthouse and former prison — a separate destination from the lower shore-side walls.',
+      hoursLabel: 'Hilltop Fort Aguada: Goa Tourism publishes 09:30–18:00. The lighthouse and jail complex are separate — confirm each.',
+      ticketLabel: 'No single verified price — check the hilltop site and the separate lighthouse or jail venue.',
+      highlights: [
+        'A 17th-century Portuguese citadel guarding the Mandovi estuary approach.',
+        'One of the largest and best-preserved forts in Goa.',
+        'A still-active lighthouse and the separate Aguad jail complex nearby.',
+        'Wide views over the Arabian Sea and the river mouth.'
+      ],
+      about: 'Fort Aguada sits on a hill above the lower Sinquerim fortification covered by the main guide. It is usually what people mean by “Fort Aguada”, but it is a distinct site with its own published timetable, and it should not be confused with the sea-level walls at Candolim.',
+      tips: [
+        'Treat the hilltop fort, the lighthouse and the jail complex as three separate stops.',
+        'Confirm the current 09:30–18:00 timetable and any ticket with the operator before travelling.',
+        'Allow for the change in elevation; the lower walls are a different drive, not a short walk.',
+        'Keep coastal conditions in mind — rough seas can make the lower stop inadvisable.'
+      ],
+      transport: 'The hilltop approach starts from a different point than the Plus Code FQX8+9HJ used for the lower site. Plan it as its own drive.',
+      transportBullets: [
+        'From Candolim/Calangute: a short inland drive uphill — confirm the current approach.',
+        'From Panaji: cross the bridge and follow the coastal road south.',
+        'Use a taxi or scooter and agree the waiting time if you plan both the hilltop and the lower walls.'
+      ],
+      charms: {
+        history: 'Built in the early 1600s by the Portuguese to defend the Mandovi river mouth, the citadel formed part of a wider coastal defence system that also included the lower Aguada works at Candolim.',
+        architecture: 'Massive laterite ramparts, a moat, a freshwater spring (the name “Aguada” points to water), and a circular lighthouse that still marks the approach.',
+        culture: 'Today the complex reads as layered heritage: a colonial fortress, a working lighthouse and a repurposed jail venue with exhibitions and heritage walks.',
+        experience: 'Expect broad sea-and-river views, old masonry underfoot, and a slower pace than the beaches below.'
+      },
+      routeSteps: [
+        'Confirm the current opening hours and any ticket for the hilltop fort.',
+        'Drive or ride up from your base, keeping the river-and-sea view on your right.',
+        'Walk the ramparts and the lighthouse area; note the separate jail-complex entrance.',
+        'If you also want the lower walls, plan that as a second, independently checked stop.',
+        'Return before dark; coastal light fades quickly.'
+      ],
+      photoSpots: [
+        'The rampart edge with the Mandovi mouth and the Arabian Sea behind.',
+        'The circular lighthouse against a clear Goa sky.',
+        'The old moat and gatehouse masonry.',
+        'Wide coastal panoramas toward Sinquerim and the beaches.'
+      ],
+      stayTips: 'Basing yourself in Sinquerim or Candolim keeps both the hilltop fort and the lower walls within easy reach; Calangute suits a busier beach base and Panaji a wider North Goa itinerary. Compare the four areas before booking.',
+      goodToKnow: [
+        'The hilltop fort is not the same as the lower shore-side Sinquerim fortification.',
+        'The 09:30–18:00 schedule belongs to the hilltop site only.',
+        'The lighthouse and jail complex have their own access and charges.',
+        'No ticket, hour or route is shared between the hilltop and the lower walls.'
+      ]
+    },
     title: 'Fort Aguada & Lighthouse Guide: The Hilltop Site Explained',
     description:
       'Fort Aguada on the hill, its lighthouse and the former prison are separate from the lower Sinquerim fortification. Compare their approaches, published timetable and verification needs.',
@@ -146,6 +196,56 @@ export const TOPICS_C: Topic[] = [
     batch: 2,
     priority: 'P1',
     schema: 'attraction',
+    detail: {
+      tagline: 'A long North Goa beach beside the lower Sinquerim fortification — best treated as its own stop.',
+      hoursLabel: 'Public beach — no fixed hours published here; verify access and sea conditions locally.',
+      ticketLabel: 'No entry charge is published for the beach itself; activities and venues are separate.',
+      highlights: [
+        'A long, open stretch of North Goa coastline.',
+        'Shares the shore with the lower Sinquerim fortification.',
+        'Food, stays and transport services in the wider Candolim area.',
+        'A flexible half-day pairing with the historic walls.'
+      ],
+      about: 'Candolim Beach is a separate recreational destination close to the lower Sinquerim fortification. A permitted beach approach does not confirm an entrance to the walls, and the two should be checked independently.',
+      tips: [
+        'Confirm the lower site’s entrance and the day’s sea conditions before pairing the two.',
+        'Keep the beach stop flexible if surf, rain or heat make the shore unsuitable.',
+        'Agree a single permitted drop-off or parking point with your driver.',
+        'Treat any ticketed venue or activity as a separate booking.'
+      ],
+      transport: 'Candolim links to the rest of North Goa by the coastal road; the lower fortification is a separate approach, not a fixed walk away.',
+      transportBullets: [
+        'From Panaji: a coastal drive north via the main road.',
+        'From Calangute: a short ride south along the beach road.',
+        'From the airport (GOI or GOX): confirm which code before arranging a transfer.'
+      ],
+      charms: {
+        history: 'The beach fronts the Candolim coastline where the lower Aguada defensive works were built; the shore and the fortification have shared the same stretch for centuries.',
+        architecture: 'The sea-facing laterite wall of the lower fortification is the built landmark here; the beach itself is open sand and palms.',
+        culture: 'Candolim is one of Goa’s longer-established coastal villages, with a mix of local life, food and seasonal tourism.',
+        experience: 'Expect a wide horizon, a slower beach rhythm, and the fort walls visible from the sand.'
+      },
+      routeSteps: [
+        'Decide which stretch of Candolim Beach you want and how it pairs with the lower walls.',
+        'Confirm the permitted approach and parking with your driver or accommodation.',
+        'Check the sea state and tide before any time on the shore.',
+        'Keep food, a beach stop and any activity as independent, separately checked plans.',
+        'Return by daylight along a permitted route.'
+      ],
+      photoSpots: [
+        'The lower fortification wall meeting the sand at the water line.',
+        'Palm-fringed open beach with the fort in the distance.',
+        'Sunset over the Arabian Sea from the shore.',
+        'Coastal road views toward Sinquerim.'
+      ],
+      stayTips: 'Sinquerim and Candolim are the most convenient coastal bases; Calangute suits a busier beach holiday and Panaji a wider itinerary. Compare the four areas and confirm exact locations before booking.',
+      goodToKnow: [
+        'The beach and the fortification are adjacent but separate destinations.',
+        'Sea state, surf and tide change through the day and across seasons.',
+        'Monsoon conditions bring rough water and wet, slippery approaches.',
+        'Do not climb walls or cross barriers for a better view.'
+      ]
+    },
     title: 'Candolim Beach Guide: Combining the Coast with Sinquerim Fort',
     description:
       'Plan Candolim Beach alongside the lower Sinquerim fortification: coastal access, food and transport considerations, and why the two stops should be checked separately.',
@@ -213,6 +313,56 @@ export const TOPICS_C: Topic[] = [
     batch: 2,
     priority: 'P1',
     schema: 'attraction',
+    detail: {
+      tagline: 'Another North Goa fort — a separate heritage destination from Sinquerim, worth comparing on a multi-fort day.',
+      hoursLabel: 'No fixed hours verified here — confirm the venue’s current opening with the operator.',
+      ticketLabel: 'No verified price published — check the venue’s own current information.',
+      highlights: [
+        'A separate North Goa fort with its own setting and history.',
+        'Commonly paired with Sinquerim and Fort Aguada on heritage days.',
+        'Its own route, entrance and visiting arrangements.',
+        'River-and-coast views distinct from the Candolim shore.'
+      ],
+      about: 'Reis Magos Fort is one of the other historic forts visitors consider when planning North Goa. It is a separate site with its own access, not an alternative name for Sinquerim Fort.',
+      tips: [
+        'Confirm the current opening and any ticket or booking for Reis Magos.',
+        'Plan the route from your base and allow flexible transport time.',
+        'If a heritage walk or exhibition needs booking, arrange it in advance.',
+        'Keep the separate access for the lower Sinquerim walls in mind on the same day.'
+      ],
+      transport: 'Reis Magos sits on the north bank approach; reach it from Panaji or across the coastal road from Candolim and Calangute.',
+      transportBullets: [
+        'From Panaji: a short drive across the river approach.',
+        'From Candolim/Calangute: plan a cross-coast transfer and agree the fare.',
+        'From the airport (GOI or GOX): confirm which code before booking.'
+      ],
+      charms: {
+        history: 'Reis Magos is among the historic forts of North Goa, often described as a 16th-century Portuguese structure later used for defence and then preservation — verify specific dates with the venue.',
+        architecture: 'A compact hillfort with ramparts and a commanding position over the river-and-coast approach.',
+        culture: 'It is frequently presented as a cultural-heritage stop, distinct from the working beaches and the Aguada complex.',
+        experience: 'Expect a quieter, more contained fort experience with views toward the Mandovi and the sea.'
+      },
+      routeSteps: [
+        'Confirm Reis Magos’ current opening and any booking requirement.',
+        'Arrange transport from your base and agree the waiting time.',
+        'Visit as one timed, independently confirmed stop.',
+        'If adding the lower Sinquerim walls, check that entrance separately.',
+        'Return by daylight with agreed transport.'
+      ],
+      photoSpots: [
+        'The ramparts with the river-and-coast approach below.',
+        'Compact laterite architecture against the sky.',
+        'Views toward the Mandovi and the wider North Goa coast.',
+        'Quiet courtyard and gateway details.'
+      ],
+      stayTips: 'Panaji is a natural base for a Reis Magos visit; Sinquerim and Candolim also work if you are combining forts and beaches. Compare the four areas before booking.',
+      goodToKnow: [
+        'Reis Magos is not Sinquerim Fort and not Fort Aguada.',
+        'No verified ticket price or timetable is published here.',
+        'A 09:30–18:00 schedule, if cited, refers to hilltop Fort Aguada.',
+        'Keep the two forts as separate, independently checked stops.'
+      ]
+    },
     title: 'Reis Magos Fort Guide: Another North Goa Fort to Compare',
     description:
       'Reis Magos Fort is a separate North Goa fort destination. Compare its identity, approach and verification needs with the lower Sinquerim fortification before adding it to an itinerary.',
