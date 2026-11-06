@@ -1,0 +1,14 @@
+---
+import TopicLayout from '../layouts/TopicLayout.astro';
+import AttractionGuide from '../layouts/AttractionGuide.astro';
+import { TOPICS_HI } from '../data/topics';
+import type { Topic } from '../data/topic-types';
+
+export function getStaticPaths() {
+  return TOPICS_HI.map((topic) => ({ params: { slug: topic.slug }, props: { topic } }));
+}
+
+const { topic } = Astro.props as { topic: Topic };
+---
+
+{topic.schema === 'attraction' ? <AttractionGuide topic={topic} locale="hi" /> : <TopicLayout topic={topic} locale="hi" />}

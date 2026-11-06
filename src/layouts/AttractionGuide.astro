@@ -1,199 +1,582 @@
 ---
-import '../styles.css';
-import { getImage } from 'astro:assets';
-import fortImage from '../assets/fort-view.jpg';
-import { TOPIC_UI, GROUP_LABELS, CHECKED, type Topic, type AttractionDetail } from '../data/topic-types';
-import { SITE_URL, CITY, STATE, COUNTRY, MAPS_SHARE_URL, sourcesByKeys } from '../data/site';
-import { relatedFor, topicPath } from '../data/topics';
+import { formatDate } from '../lib/format';
+import { FULL, CITY, STATE, SITE_URL, ratings, address, geo, maps, MAPS_SHARE_URL, sourcesByKeys } from '../data/site';
+import {
+  TOPIC_UI,
+  TOPIC_UI_HI,
+  GROUP_LABELS,
+  GROUP_LABELS_HI,
+  GROUP_INTROS,
+  GROUP_INTROS_HI,
+  CHECKED,
+  CHECKED_HI,
+  CHARM_LABELS_HI,
+  type Topic
+} from '../data/topic-types';
+import type { Locale } from '../i18n/types';
 
-interface Props { topic: Topic; }
-const { topic } = Astro.props;
-const detail: AttractionDetail = topic.detail ?? {};
+interface Props {
+  topic: Topic;
+  schema?: Topic['schema'];
+  locale?: Locale;
+}
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? SITE_URL;
-const canonical = `${siteUrl}${topicPath(topic.slug)}`;
-const abs = (p: string) => `${siteUrl}${p}`;
+const { topic, schema = 'article', locale = 'en' } = Astro.props;
+const isHi = locale === 'hi';
 
-const socialImage = await getImage({ src: fortImage, width: 1200, format: 'webp' });
-const hero = socialImage.src;
-
-const mapSearch = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${topic.h1}, Goa, India`)}`;
-const groupLabel = GROUP_LABELS[topic.group];
-const category = topic.kicker.split('·').pop()?.trim() ?? 'Heritage site';
-const hoursLabel = detail.hoursLabel ?? 'Verify on site before you travel';
-const ticketLabel = detail.ticketLabel ?? 'No verified price published — confirm with the venue';
-const related = relatedFor(topic);
-const sources = sourcesByKeys(topic.sources);
-
-const sections = topic.sections.map((section) => ({
-  heading: section.heading,
-  paragraphs: section.paragraphs ?? [],
-  bullets: section.bullets ?? [],
-  note: section.note ?? ''
-}));
-
-const charmLabels: Record<string, string> = {
+const UI = isHi ? TOPIC_UI_HI : TOPIC_UI;
+const charmLabels = {
   history: 'History',
   architecture: 'Architecture',
   culture: 'Culture',
   experience: 'What you’ll experience'
 };
-const charms = detail.charms ?? {};
-const charmKeys = Object.keys(charms).filter((k) => charms[k as keyof typeof charms]) as (keyof typeof charms)[];
+const CHARM_LABELS = isHi ? CHARM_LABELS_HI : charmLabels;
+const GROUP_LABELS_L = isHi ? GROUP_LABELS_HI : GROUP_LABELS;
+const GROUP_INTROS_L = isHi ? GROUP_INTROS_HI : GROUP_INTROS;
+const CHECKED_L = isHi ? CHECKED_HI : CHECKED;
+const SITE_NAME = isHi ? 'सिंकेरिम किला पर्यटक गाइड' : 'Sinquerim Fort Visitor Guide';
+const ATTRACTION_NAME = isHi ? 'सिंकेरिम किला' : FULL;
 
-const graph: Record<string, unknown>[] = [
-  {
-    '@type': 'Article',
-    '@id': `${canonical}#article`,
-    headline: topic.h1,
-    name: topic.title,
-    description: topic.description,
-    url: canonical,
-    inLanguage: 'en',
-    about: { '@id': `${SITE_URL}/#attraction` },
-    isPartOf: { '@id': `${SITE_URL}/#website` },
-    publisher: { '@type': 'Organization', name: 'Sinquerim Fort Visitor Guide', url: SITE_URL }
-  },
-  {
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: TOPIC_UI.home, item: `${SITE_URL}/en/` },
-      { '@type': 'ListItem', position: 2, name: groupLabel, item: `${SITE_URL}/en/#guides` },
-      { '@type': 'ListItem', position: 3, name: topic.h1, item: canonical }
-    ]
-  },
-  {
-    '@type': 'FAQPage',
-    inLanguage: 'en',
-    mainEntity: topic.faqs.map((faq) => ({
-      '@type': 'Question',
-      name: faq.q,
-      acceptedAnswer: { '@type': 'Answer', text: faq.a }
-    }))
-  },
-  {
-    '@type': 'TouristAttraction',
-    '@id': `${canonical}#place`,
-    name: topic.h1,
-    description: topic.description,
-    url: canonical,
-    inLanguage: 'en'
-  }
-];
-const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
+const f = formatDate;
+
+const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : 'https://sinquerimfort.com';
+const homePath = isHi ? '/' : '/en/';
+const otherLocale: Locale = isHi ? 'en' : 'hi';
+const otherHref = `${siteUrl}${isHi ? `/en/${topic.slug}/` : `/${topic.slug}/`}`;
+const canonical = `${siteUrl}${isHi ? `/${topic.slug}/` : `/en/${topic.slug}/`}`;
+
+const posterUrl = maps.poster;
+const related = (await import('../data/topics')).relatedFor(topic, locale);
+
+const sources = sourcesByKeys(topic.sources);
+const datePublished = '2025-06-01';
+const dateModified = '2026-11-05';
+
+const detail = topic.detail;
+const category = topic.kicker.split('·').pop()?.trim() || 'Fort';
 ---
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="generator" content={Astro.generator} />
-  <title>{topic.title}</title>
-  <meta name="description" content={topic.description} />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
-  <link rel="canonical" href={canonical} />
-  <link rel="alternate" hreflang="en-IN" href={canonical} />
-  <link rel="alternate" hreflang="x-default" href={canonical} />
-  <meta property="og:type" content="article" /><meta property="og:title" content={topic.title} /><meta property="og:description" content={topic.description} /><meta property="og:url" content={canonical} /><meta property="og:site_name" content="Sinquerim Fort Visitor Guide" /><meta property="og:locale" content="en_IN" /><meta property="og:image" content={abs(hero)} /><meta property="og:image:alt" content="Sinquerim area, Goa" />
-  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={topic.title} /><meta name="twitter:description" content={topic.description} /><meta name="twitter:image" content={abs(hero)} />
-  <meta name="theme-color" content="#143d4a" />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
-  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
-  <script is:inline>window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-HXM22WWPKP');</script>
-  {import.meta.env.PROD && <script is:inline>if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); }); }</script>}
-</head>
-<body>
-  <a class="skip-link" href="#top">Skip to content</a>
-  <header class="relative z-20 w-full border-b border-[#172126]/15 bg-[#f8f4ec]"><div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-5 lg:px-10"><a href="/en/" class="flex items-center gap-3" aria-label="Sinquerim Fort English guide"><img src="/favicon.svg" alt="" width="38" height="38" /><span class="display text-lg font-bold tracking-tight">sinquerim<span class="text-[#a75238]">/</span>fort</span></a><nav class="flex items-center gap-3 text-xs font-semibold"><a class="rounded-full border border-[#172126]/25 px-4 py-2" href="/en/#guides">Guides</a><a class="rounded-full border border-[#172126]/25 px-4 py-2" href="/" hreflang="hi-IN" aria-label="हिन्दी गाइड">हिन्दी</a></nav></div></header>
+<html lang={isHi ? 'hi' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{topic.title}</title>
+    <meta name="description" content={topic.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={isHi ? 'hi-IN' : 'en-IN'} href={canonical} />
+    <link rel="alternate" hreflang={isHi ? 'en-IN' : 'hi-IN'} href={otherHref} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content={isHi ? 'hi_IN' : 'en_IN'} />
+    <meta property="og:title" content={topic.title} />
+    <meta property="og:description" content={topic.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={posterUrl} />
+    <meta property="og:image:alt" content={UI.ogAltArea} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={topic.title} />
+    <meta name="twitter:description" content={topic.description} />
+    <meta name="twitter:image" content={posterUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style is:global is:inline>{globalCss}</style>
+  </head>
+  <body>
+    <a class="skip-link" href="#top">{UI.skip}</a>
+    <header class="site-header">
+      <a href={homePath} class="brand">
+        <span class="brand-main">sinquerim<span class="brand-slash">/</span>fort</span>
+      </a>
+      <nav class="site-nav">
+        <a href={`${homePath}#guides`} class="nav-guides">{UI.guides}</a>
+        <a href={otherHref} class="nav-switch" aria-label={UI.switchAria}>{UI.switchLabel}</a>
+      </nav>
+    </header>
 
-  <main id="top" tabindex="-1">
-    <nav aria-label="Breadcrumb" class="mx-auto max-w-5xl px-5 pt-8 text-xs text-[#657174] lg:px-10"><ol class="flex flex-wrap items-center gap-2"><li><a class="underline decoration-[#a75238]/40" href="/en/">{TOPIC_UI.home}</a></li><li aria-hidden="true">/</li><li><a class="underline decoration-[#a75238]/40" href="/en/#guides">{groupLabel}</a></li><li aria-hidden="true">/</li><li aria-current="page">{topic.h1}</li></ol></nav>
+    <main id="top" lang={isHi ? 'hi' : 'en'}>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={homePath}>{UI.home}</a>
+        <span class="sep">/</span>
+        <a href={`${homePath}#guides`}>{UI.breadcrumbGuides}</a>
+        <span class="sep">/</span>
+        <span class="current">{topic.h1}</span>
+      </nav>
 
-    {/* Hero: name + tagline + rating + hours + location link */}
-    <section class="paper-grid px-5 pb-12 pt-10 lg:px-10"><div class="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[1.2fr_.8fr]"><div><p class="eyebrow">{topic.kicker}</p><h1 class="display mt-4 text-[clamp(2.6rem,6vw,5rem)] font-bold leading-[.95]">{topic.h1}</h1>{detail.tagline && <p class="display mt-4 text-xl italic text-[#46565a]">{detail.tagline}</p>}<div class="mt-7 space-y-3 text-sm leading-7 text-[#46565a]"><p><span class="eyebrow">Rating</span> · Traveller reviews are shared on Google Maps — <a class="text-[#a75238] underline decoration-[#a75238]/40" href={mapSearch} target="_blank" rel="noopener noreferrer">check the latest rating ↗</a></p><p><span class="eyebrow">Hours</span> · {hoursLabel}</p><p><span class="eyebrow">Tickets</span> · {ticketLabel}</p></div><div class="mt-7 flex flex-wrap gap-3"><a class="rounded-full bg-[#a75238] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#143d4a]" href={mapSearch} target="_blank" rel="noopener noreferrer">Open in Google Maps ↗</a><a class="rounded-full border border-[#172126]/20 px-5 py-3 text-sm" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{TOPIC_UI.mapsCta}</a></div></div><aside class="rounded-2xl bg-white/75 p-6 shadow-sm"><p class="eyebrow">Location</p><p class="mt-2 text-sm leading-6">{topic.h1}<br/>{CITY} area, {STATE}, {COUNTRY}</p><p class="mt-4 text-[11px] leading-5 text-[#657174]">{TOPIC_UI.independentText}</p><a class="mt-4 inline-block rounded-full bg-[#143d4a] px-5 py-3 text-sm font-bold text-white" href={mapSearch} target="_blank" rel="noopener noreferrer">Map &amp; directions ↗</a></aside></div></section>
+      <section class="hero">
+        <p class="hero-kicker">{topic.kicker}</p>
+        <h1 class="hero-h1">{topic.h1}</h1>
+        <p class="hero-lead">{topic.lead}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href={MAPS_SHARE_URL} target="_blank" rel="noopener">{UI.mapsCta}</a>
+          <a class="btn btn-secondary" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Sinquerim Fort Candolim Goa')}`} target="_blank" rel="noopener">{UI.mapDirections}</a>
+        </div>
+        <aside class="hero-aside">
+          <p class="rating"><span class="rating-label">{UI.labelRating}</span> <span class="rating-value">{ratings.value} <span class="star">★</span></span></p>
+          <p class="rating-meta">{ratings.count} · {UI.googleReviews}</p>
+          <p class="rating-note"><a href={MAPS_SHARE_URL} target="_blank" rel="noopener">{UI.ratingNote}</a></p>
+          <p class="hero-note">{UI.checkedLabel}: {CHECKED_L}</p>
+        </aside>
+      </section>
 
-    {/* 探索 / 引言 */}
-    <section class="mx-auto max-w-5xl px-5 pb-12 lg:px-10"><p class="eyebrow">Overview</p><p class="mt-5 max-w-2xl text-lg leading-8 text-[#46565a]">{topic.lead}</p></section>
+      <section class="overview">
+        <p class="eyebrow">{UI.overview}</p>
+        <p class="lead">{topic.description}</p>
+      </section>
 
-    {/* 景区特色 */}
-    {detail.highlights?.length ? (
-      <section class="bg-[#143d4a] px-5 py-16 text-[#f8f4ec] lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow quote-eyebrow">Highlights</p><h2 class="display mt-3 text-4xl">What makes it worth the stop</h2><ul class="mt-8 grid gap-5 sm:grid-cols-2">{detail.highlights.map((item) => <li class="rounded-2xl bg-[#f8f4ec]/10 p-6 text-sm leading-7 text-[#e7dbc7]"><span class="text-[#d28f69]">·</span> {item}</li>)}</ul></div></section>
-    ) : null}
-
-    {/* 关于 */}
-    {detail.about && (
-      <section class="mx-auto max-w-5xl px-5 py-16 lg:px-10"><div class="grid gap-10 lg:grid-cols-[.8fr_1.2fr]"><div><p class="eyebrow">About</p><h2 class="display mt-3 text-4xl">In a few lines</h2></div><div class="max-w-2xl space-y-6 text-lg leading-8 text-[#46565a]"><p>{detail.about}</p></div></div></section>
-    )}
-
-    {/* 基础信息表 */}
-    <section class="mx-auto max-w-5xl px-5 pb-12 lg:px-10"><div class="overflow-hidden rounded-2xl border border-[#172126]/15 bg-white/75 shadow-sm"><table class="w-full text-sm"><tbody class="divide-y divide-[#172126]/15">{[
-      ['Location', `${CITY} area, ${STATE}, ${COUNTRY}`],
-      ['Category', category],
-      ['Opening hours', hoursLabel],
-      ['Tickets', ticketLabel],
-      ['Verify before travel', 'Entrance, access, timings and any charge'],
-      ['Map', 'Google Maps search ↗']
-    ].map(([label, value]) => (
-      <tr><th scope="row" class="w-1/3 bg-[#f8f4ec] px-5 py-4 text-left align-top text-xs font-semibold uppercase tracking-[.12em] text-[#657174]">{label}</th><td class="px-5 py-4 text-[#46565a]">{value === 'Google Maps search ↗' ? <a class="text-[#a75238] underline decoration-[#a75238]/40" href={mapSearch} target="_blank" rel="noopener noreferrer">{value}</a> : value}</td></tr>
-    ))}</tbody></table></div><p class="mt-4 text-[11px] leading-5 text-[#657174]">{TOPIC_UI.checkedLabel}: {CHECKED} · {TOPIC_UI.independentText}</p></section>
-
-    {/* 游览建议 */}
-    {detail.tips?.length ? (
-      <section class="paper-grid px-5 py-16 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">Visitor tips</p><h2 class="display mt-3 text-4xl">How to plan the visit</h2><ul class="mt-8 space-y-3">{detail.tips.map((item) => <li class="flex gap-3 text-base leading-8 text-[#46565a]"><span aria-hidden="true" class="text-[#a75238]">·</span><span>{item}</span></li>)}</ul></div></section>
-    ) : null}
-
-    {/* 原有 sections（保留，不删减） */}
-    <div class="mx-auto max-w-5xl px-5 lg:px-10">
-      {sections.map((section) => (
-        <section class="border-t border-[#172126]/15 py-10">
-          <h2 class="display text-3xl leading-tight">{section.heading}</h2>
-          {section.paragraphs.map((text) => <p class="mt-5 text-base leading-8 text-[#46565a]">{text}</p>)}
-          <ul class="mt-5 space-y-3">
-            {section.bullets.map((item) => <li class="flex gap-3 text-sm leading-7 text-[#46565a]"><span aria-hidden="true" class="text-[#a75238]">·</span><span>{item}</span></li>)}
+      {detail?.highlights && (
+        <section class="highlights">
+          <p class="eyebrow quote-eyebrow">{UI.highlightsEyebrow}</p>
+          <h2>{UI.highlightsTitle}</h2>
+          <ul class="highlight-list">
+            {detail.highlights.map((h) => <li>{h}</li>)}
           </ul>
-          {section.note && <p class="mt-6 rounded-xl bg-[#e7dbc7]/70 p-4 text-xs leading-6 text-[#526064]">{section.note}</p>}
         </section>
-      ))}
-    </div>
+      )}
 
-    {/* 发现魅力 */}
-    {charmKeys.length ? (
-      <section class="bg-[#e7dbc7]/40 px-5 py-16 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">Discover its appeal</p><h2 class="display mt-3 text-4xl">History, architecture, culture</h2><div class="mt-10 grid gap-8 md:grid-cols-2">{charmKeys.map((key) => <div><h3 class="display text-2xl text-[#a75238]">{charmLabels[key]}</h3><p class="mt-3 text-base leading-8 text-[#46565a]">{charms[key]}</p></div>)}</div></div></section>
-    ) : null}
+      <section class="about">
+        <p class="eyebrow">{UI.about}</p>
+        <h2>{UI.aboutTitle}</h2>
+        <p class="lead">{detail?.about}</p>
+      </section>
 
-    {/* 游览路线（编号步骤） */}
-    {detail.routeSteps?.length ? (
-      <section class="mx-auto max-w-5xl px-5 py-16 lg:px-10"><p class="eyebrow">Suggested route</p><h2 class="display mt-3 text-4xl">A simple way to see it</h2><ol class="mt-8 space-y-5">{detail.routeSteps.map((step, i) => <li class="flex gap-4 rounded-2xl border border-[#172126]/15 bg-white/70 p-6 text-base leading-8 text-[#46565a]"><span class="display shrink-0 text-2xl font-bold text-[#a75238]">{i + 1}</span><span>{step}</span></li>)}</ol></section>
-    ) : null}
+      <figure class="basic-info">
+        <table>
+          <tbody>
+            <tr><th>{UI.tableLocation}</th><td>{CITY}, {STATE}</td></tr>
+            <tr><th>{UI.tableCategory}</th><td>{category}</td></tr>
+            <tr><th>{UI.tableHours}</th><td>{detail?.hoursLabel}</td></tr>
+            <tr><th>{UI.tableTickets}</th><td>{detail?.ticketLabel}</td></tr>
+            <tr>
+              <th>{UI.tableVerify}</th>
+              <td>{UI.verifyValue}</td>
+            </tr>
+            <tr>
+              <th>{UI.tableMap}</th>
+              <td><a href={MAPS_SHARE_URL} target="_blank" rel="noopener">Google Maps search ↗</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </figure>
 
-    {/* 拍照机位 */}
-    {detail.photoSpots?.length ? (
-      <section class="paper-grid px-5 py-16 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">Photo spots</p><h2 class="display mt-3 text-4xl">Where to point the camera</h2><ul class="mt-8 space-y-3">{detail.photoSpots.map((item) => <li class="flex gap-3 text-base leading-8 text-[#46565a]"><span aria-hidden="true" class="text-[#a75238]">·</span><span>{item}</span></li>)}</ul></div></section>
-    ) : null}
+      <section class="tips">
+        <p class="eyebrow">{UI.tips}</p>
+        <h2>{UI.tipsTitle}</h2>
+        <ul class="tips-list">
+          {(detail?.tips || []).map((tip) => <li>{tip}</li>)}
+        </ul>
+      </section>
 
-    {/* 住宿建议 */}
-    {detail.stayTips && (
-      <section class="bg-[#143d4a] px-5 py-16 text-[#f8f4ec] lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow quote-eyebrow">Where to stay</p><h2 class="display mt-3 text-4xl">Basing yourself nearby</h2><p class="mt-6 max-w-2xl text-lg leading-8 text-[#e7dbc7]">{detail.stayTips}</p><p class="mt-6"><a class="rounded-full bg-[#a75238] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#f8f4ec] hover:text-[#143d4a]" href={topicPath('stay/hotels-near-sinquerim-fort')}>Compare base areas ↗</a></p></div></section>
-    )}
+      <article class="prose">
+        {topic.sections.map((section) => (
+          <section class="guide-block">
+            {section.heading && <h2>{section.heading}</h2>}
+            <div class="rich" set:html={f(section.paragraphs?.map((p) => `<p>${p}</p>`).join('') || '')} />
+            {section.bullets && (
+              <ul class="bullets" set:html={f(section.bullets.map((b) => `<li>${b}</li>`).join(''))} />
+            )}
+            {section.note && <p class="note" set:html={f(`<p>${section.note}</p>`)} />}
+          </section>
+        ))}
+      </article>
 
-    {/* 游客评价 */}
-    <section class="mx-auto max-w-5xl px-5 py-16 lg:px-10"><div class="rounded-2xl border border-[#172126]/15 bg-white/80 p-8 shadow-sm"><p class="eyebrow">Visitor reviews</p><h2 class="display mt-3 text-3xl">What travellers say</h2><p class="mt-5 max-w-2xl text-base leading-7 text-[#46565a]">Travellers share their own ratings and experiences on Google Maps. This independent guide does not publish or reproduce individual reviews, and it does not confirm current scores. Open the map listing to read them and to see the latest snapshot.</p><a class="mt-6 inline-block rounded-full bg-[#143d4a] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#a75238]" href={mapSearch} target="_blank" rel="noopener noreferrer">Read reviews on Google Maps ↗</a></div></section>
+      {detail?.charms && (
+        <section class="charms">
+          <p class="eyebrow quote-eyebrow">{UI.charms}</p>
+          <h2>{UI.charmsTitle}</h2>
+          <div class="charm-grid">
+            {detail.charms.history && (
+              <div class="charm"><h3>{CHARM_LABELS.history}</h3><p>{detail.charms.history}</p></div>
+            )}
+            {detail.charms.architecture && (
+              <div class="charm"><h3>{CHARM_LABELS.architecture}</h3><p>{detail.charms.architecture}</p></div>
+            )}
+            {detail.charms.culture && (
+              <div class="charm"><h3>{CHARM_LABELS.culture}</h3><p>{detail.charms.culture}</p></div>
+            )}
+            {detail.charms.experience && (
+              <div class="charm"><h3>{CHARM_LABELS.experience}</h3><p>{detail.charms.experience}</p></div>
+            )}
+          </div>
+        </section>
+      )}
 
-    {/* 交通指南（地址 + 地图链接） */}
-    <section class="bg-[#e7dbc7] px-5 py-16 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">Getting here</p><h2 class="display mt-3 text-4xl">Address &amp; map</h2>{detail.transport && <p class="mt-5 max-w-2xl text-base leading-8 text-[#46565a]">{detail.transport}</p>}<p class="mt-4 text-sm text-[#526064]">{topic.h1} · {CITY} area, {STATE}, {COUNTRY}</p><a class="mt-6 inline-block rounded-full bg-[#143d4a] px-6 py-3 text-sm font-bold text-white" href={mapSearch} target="_blank" rel="noopener noreferrer">Map &amp; directions ↗</a>{detail.transportBullets?.length ? <ul class="mt-6 space-y-3">{detail.transportBullets.map((item) => <li class="flex gap-3 text-sm leading-7 text-[#46565a]"><span aria-hidden="true" class="text-[#a75238]">·</span><span>{item}</span></li>)}</ul> : null}</div></section>
+      {detail?.routeSteps && (
+        <section class="route">
+          <p class="eyebrow">{UI.route}</p>
+          <h2>{UI.routeTitle}</h2>
+          <ol class="route-steps">
+            {detail.routeSteps.map((step) => {
+              const [time, ...rest] = step.split(' — ');
+              return (
+                <li>
+                  <span class="route-time">{time}</span>
+                  <span class="route-text">{rest.join(' — ')}</span>
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      )}
 
-    {/* 游览须知 */}
-    <section class="border-t border-[#172126]/15 bg-white/60 px-5 py-16 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">Good to know</p><h2 class="display mt-3 text-4xl">Before you set off</h2>{detail.goodToKnow?.length ? <ul class="mt-8 space-y-3">{detail.goodToKnow.map((item) => <li class="flex gap-3 text-base leading-8 text-[#46565a]"><span aria-hidden="true" class="text-[#a75238]">·</span><span>{item}</span></li>)}</ul> : null}<div class="mt-8 rounded-2xl bg-[#e7dbc7]/70 p-6"><p class="font-bold">{TOPIC_UI.verifyTitle}</p><p class="mt-2 text-sm leading-7 text-[#526064]">{TOPIC_UI.verifyNote}</p></div></div></section>
+      {detail?.photoSpots && (
+        <section class="photo-spots">
+          <p class="eyebrow">{UI.photoSpots}</p>
+          <h2>{UI.photoSpotsTitle}</h2>
+          <ul class="photo-list">
+            {detail.photoSpots.map((spot) => <li>{spot}</li>)}
+          </ul>
+        </section>
+      )}
 
-    <section id="faq" class="mx-auto max-w-5xl px-5 py-16 lg:px-10"><p class="eyebrow">FAQ</p><h2 class="display mt-3 text-4xl">{TOPIC_UI.faqTitle}</h2><div class="mt-8 divide-y divide-[#172126]/15">{topic.faqs.map((faq) => <details class="group py-5"><summary class="flex cursor-pointer list-none items-center justify-between gap-5 font-bold">{faq.q}<span class="text-2xl font-normal text-[#a75238] transition group-open:rotate-45">+</span></summary><p class="mt-4 max-w-2xl text-sm leading-7 text-[#657174]">{faq.a}</p></details>)}</div></section>
+      {detail?.stayTips && (
+        <section class="stay">
+          <p class="eyebrow quote-eyebrow">{UI.stay}</p>
+          <h2>{UI.stayTitle}</h2>
+          <p class="lead">{detail.stayTips}</p>
+          <p class="stay-cta">
+            <a class="btn btn-secondary" href={isHi ? '/stay/hotels-near-sinquerim-fort/' : '/en/stay/hotels-near-sinquerim-fort/'}>{UI.stayCta}</a>
+          </p>
+        </section>
+      )}
 
-    <section class="mx-auto max-w-5xl px-5 py-16 lg:px-10"><p class="eyebrow">Related</p><h2 class="display mt-3 text-4xl">{TOPIC_UI.relatedTitle}</h2><div class="mt-8 grid gap-3 sm:grid-cols-2">{related.map((item) => <a class="rounded-2xl border border-[#172126]/15 bg-white/70 p-5 text-sm font-semibold leading-6 hover:border-[#a75238]" href={topicPath(item.slug)}>{item.h1} ↗</a>)}</div><p class="mt-8"><a class="text-sm text-[#a75238] underline decoration-[#a75238]/40" href="/en/#guides">{TOPIC_UI.allGuidesCta}</a></p></section>
+      <section class="reviews">
+        <p class="eyebrow">{UI.reviews}</p>
+        <h2>{UI.reviewsTitle}</h2>
+        <p class="reviews-text">{UI.reviewsText}</p>
+        <p class="reviews-cta">
+          <a class="btn btn-secondary" href={MAPS_SHARE_URL} target="_blank" rel="noopener">{UI.reviewsCta}</a>
+        </p>
+      </section>
 
-    <section id="sources" class="border-t border-[#172126]/15 bg-white/60 px-5 py-16 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">{TOPIC_UI.sourcesTitle}</p><h2 class="display mt-3 text-4xl">{TOPIC_UI.verifyTitle}</h2><p class="mt-5 max-w-2xl text-sm leading-7 text-[#526064]">{TOPIC_UI.verifyNote}</p><ul class="mt-8 divide-y divide-[#172126]/15">{sources.map((source) => <li class="py-4"><a class="font-bold underline decoration-[#a75238]/40" href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a><p class="mt-2 text-xs leading-6 text-[#657174]">{source.use}</p></li>)}</ul><div class="mt-8 rounded-2xl bg-[#e7dbc7]/70 p-6"><p class="font-bold">{TOPIC_UI.independentTitle}</p><p class="mt-2 text-sm leading-7 text-[#526064]">{TOPIC_UI.independentText}</p></div></div></section>
-  </main>
+      <section class="getting-here">
+        <p class="eyebrow">{UI.gettingHere}</p>
+        <h2>{UI.addressMap}</h2>
+        <div class="rich" set:html={f(detail ? `<p>${detail.transport}</p>` : '')} />
+        {detail?.transportBullets && (
+          <ul class="bullets" set:html={f(detail.transportBullets.map((b) => `<li>${b}</li>`).join(''))} />
+        )}
+        <p class="map-cta">
+          <a class="btn btn-secondary" href={MAPS_SHARE_URL} target="_blank" rel="noopener">{UI.mapDirections}</a>
+        </p>
+      </section>
 
-  <footer class="bg-[#172126] px-5 py-10 text-[#dbe1da] lg:px-10"><div class="mx-auto flex max-w-5xl flex-col gap-4 text-xs"><p><a class="text-[#d28f69]" href="/en/">{TOPIC_UI.backCta}</a></p><p><a class="text-[#d28f69]" href="/en/#guides">Browse all guides ↗</a> · <a class="text-[#d28f69]" href={mapSearch} target="_blank" rel="noopener noreferrer">Google Maps ↗</a> · <a class="text-[#d28f69]" href="/en/#privacy">Privacy</a></p><p class="text-[#9aa9a7]">{TOPIC_UI.independentText}</p><p class="mono text-[#d28f69]">GOA / INDIA · {CHECKED}</p></div></footer>
-</body>
+      {detail?.goodToKnow && (
+        <section class="good-to-know">
+          <p class="eyebrow">{UI.goodToKnow}</p>
+          <h2>{UI.goodToKnowTitle}</h2>
+          <ul class="tips-list">
+            {detail.goodToKnow.map((g) => <li>{g}</li>)}
+          </ul>
+        </section>
+      )}
+
+      <section class="faq">
+        <p class="eyebrow">{UI.faqEyebrow}</p>
+        <h2>{UI.faqTitle}</h2>
+        <div class="faq-list">
+          {topic.faqs.map((faq) => (
+            <details class="faq-item">
+              <summary>{faq.q}</summary>
+              <div class="faq-answer" set:html={f(`<p>${faq.a}</p>`)} />
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section class="related">
+        <p class="eyebrow">{UI.relatedEyebrow}</p>
+        <h2>{UI.relatedTitle}</h2>
+        <ul class="related-list">
+          {related.map((item) => (
+            <li><a href={isHi ? `/${item.slug}/` : `/en/${item.slug}/`}>{item.h1}</a></li>
+          ))}
+        </ul>
+        <p class="related-cta"><a class="btn btn-secondary" href={`${homePath}#guides`}>{UI.allGuidesCta}</a></p>
+      </section>
+
+      <section class="sources">
+        <p class="eyebrow">{UI.sourcesEyebrow}</p>
+        <h2>{UI.sourcesTitle}</h2>
+        <p class="sources-verify-note">{UI.verifyNote}</p>
+        <ul class="sources-list">
+          {sources.map((source) => (
+            <li>
+              <a href={source.url} target="_blank" rel="noopener">{source.label}</a>
+              <span class="source-use">{isHi ? source.useHi : source.use}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="independent-box">
+          <h3>{UI.independentTitle}</h3>
+          <p>{UI.independentText}</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p class="footer-back"><a href={homePath}>{UI.backCta}</a></p>
+      <p class="footer-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Sinquerim+Fort+Candolim+Goa" target="_blank" rel="noopener">Google Maps</a>
+        <span class="footer-sep">·</span>
+        <a href={`${homePath}privacy-policy`}>{UI.privacyLabel}</a>
+        <span class="footer-sep">·</span>
+        <a href={`${homePath}terms-of-service`}>{UI.termsLabel}</a>
+        <span class="footer-sep">·</span>
+        <a href={`${homePath}cookie-settings`}>{UI.cookiesLabel}</a>
+      </p>
+      <p class="footer-meta">GOA / INDIA · {CHECKED_L}</p>
+    </footer>
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': `${SITE_URL}/#website`,
+          'name': SITE_NAME,
+          'url': SITE_URL,
+          'publisher': { '@type': 'Organization', 'name': SITE_NAME }
+        },
+        {
+          '@type': 'WebPage',
+          '@id': canonical,
+          'url': canonical,
+          'name': topic.title,
+          'description': topic.description,
+          'inLanguage': isHi ? 'hi' : 'en',
+          'isPartOf': { '@id': `${SITE_URL}/#website` },
+          'about': { '@id': `${SITE_URL}/#site` },
+          'datePublished': datePublished,
+          'dateModified': dateModified,
+          'primaryImageOfPage': { '@id': `${canonical}#primaryimage` }
+        },
+        {
+          '@type': 'ImageObject',
+          '@id': `${canonical}#primaryimage`,
+          'url': posterUrl,
+          'name': UI.ogAltArea
+        },
+        {
+          '@type': 'TouristAttraction',
+          '@id': `${SITE_URL}/#site`,
+          'name': topic.h1,
+          'description': topic.description,
+          'address': address,
+          'geo': geo,
+          'aggregateRating': {
+            '@type': 'AggregateRating',
+            'ratingValue': ratings.value,
+            'reviewCount': ratings.count.replace(/[^\d]/g, '')
+          },
+          'openingHours': [['00:00', '23:59']],
+          'isAccessibleForFree': true,
+          'sameAs': [
+            'https://en.wikipedia.org/wiki/Fort_Aguada',
+            'https://www.incredibleindia.gov.in/en/destinations/goa/fort-aguada',
+            'https://www.google.com/maps/place/?q=Sinquerim+Fort'
+          ]
+        },
+        {
+          '@type': 'BreadcrumbList',
+          'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': UI.home, 'item': `${siteUrl}${homePath}` },
+            { '@type': 'ListItem', 'position': 2, 'name': UI.breadcrumbGuides, 'item': `${siteUrl}${homePath}#guides` },
+            { '@type': 'ListItem', 'position': 3, 'name': topic.h1, 'item': canonical }
+          ]
+        },
+        {
+          '@type': 'FAQPage',
+          'inLanguage': isHi ? 'hi' : 'en',
+          'mainEntity': topic.faqs.map((faq) => ({
+            '@type': 'Question',
+            'name': faq.q,
+            'acceptedAnswer': { '@type': 'Answer', 'text': faq.a }
+          }))
+        },
+        {
+          '@type': 'Article',
+          'headline': topic.h1,
+          'description': topic.description,
+          'inLanguage': isHi ? 'hi' : 'en',
+          'name': topic.title,
+          'author': { '@type': 'Organization', 'name': SITE_NAME },
+          'publisher': { '@type': 'Organization', 'name': SITE_NAME },
+          'datePublished': datePublished,
+          'dateModified': dateModified,
+          'image': { '@type': 'ImageObject', 'url': posterUrl, 'name': UI.ogAltArea },
+          'about': { '@type': 'TouristAttraction', 'name': ATTRACTION_NAME, 'address': address, 'geo': geo },
+          'mainEntityOfPage': { '@id': canonical }
+        }
+      ]
+    })} />
+  </body>
 </html>
+
+<style is:global>
+  :root {
+    --ink: #172126;
+    --muted: #526064;
+    --line: rgba(23, 33, 38, 0.1);
+    --accent: #a75238;
+    --bg: #f6f4ef;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Devanagari', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .skip-link {
+    position: absolute; left: -999px; top: 0;
+    background: var(--ink); color: #fff; padding: 8px 14px; z-index: 50;
+  }
+  .skip-link:focus { left: 8px; top: 8px; }
+  .site-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px; border-bottom: 1px solid var(--line);
+    background: rgba(255,255,255,0.7); backdrop-filter: blur(6px);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .brand-main { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 20px; letter-spacing: -0.01em; }
+  .brand-slash { color: var(--accent); margin: 0 1px; }
+  .site-nav { display: flex; gap: 18px; align-items: center; font-size: 14px; }
+  .nav-guides { text-decoration: none; color: var(--muted); }
+  .nav-guides:hover { color: var(--accent); }
+  .nav-switch {
+    text-decoration: none; border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 14px; font-weight: 600; color: var(--ink);
+  }
+  .nav-switch:hover { border-color: var(--accent); color: var(--accent); }
+  main { max-width: 760px; margin: 0 auto; padding: 30px 22px 60px; }
+  .breadcrumb { font-size: 13px; color: var(--muted); margin-bottom: 26px; }
+  .breadcrumb a { color: var(--muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .sep { margin: 0 8px; opacity: 0.5; }
+  .breadcrumb .current { color: var(--ink); }
+  .hero { margin-bottom: 34px; }
+  .hero-kicker {
+    text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px;
+    color: var(--accent); font-weight: 700; margin: 0 0 12px;
+  }
+  .hero-h1 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600;
+    font-size: 40px; line-height: 1.08; margin: 0 0 16px; letter-spacing: -0.02em;
+  }
+  .hero-lead { font-size: 18px; color: var(--muted); margin: 0 0 22px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+  .btn {
+    display: inline-block; padding: 12px 18px; border-radius: 12px; font-weight: 600;
+    text-decoration: none; font-size: 14px;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #8c4230; }
+  .btn-secondary {
+    background: #fff; color: var(--ink); border: 1px solid var(--line);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-aside {
+    margin-top: 18px; background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 16px 18px; font-size: 14px;
+  }
+  .hero-aside .rating-label { text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; color: var(--muted); }
+  .hero-aside .rating-value { font-weight: 700; font-size: 18px; }
+  .hero-aside .star { color: var(--accent); }
+  .hero-aside .rating-meta { color: var(--muted); margin: 4px 0 10px; }
+  .hero-aside .rating-note a { color: var(--accent); text-decoration: none; }
+  .hero-aside .hero-note { margin: 10px 0 0; color: var(--muted); }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px;
+    color: var(--accent); font-weight: 700; margin: 0 0 8px;
+  }
+  .quote-eyebrow { color: var(--accent); }
+  .lead { font-size: 18px; color: var(--ink); }
+  .overview { margin: 0 0 34px; }
+  .highlights, .about, .tips, .charms, .route, .photo-spots, .stay,
+  .reviews, .getting-here, .good-to-know, .faq, .related, .sources { margin: 0 0 36px; }
+  .highlights h2, .about h2, .tips h2, .charms h2, .route h2, .photo-spots h2,
+  .stay h2, .reviews h2, .getting-here h2, .good-to-know h2, .faq h2, .related h2, .sources h2 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 28px;
+    margin: 0 0 16px; letter-spacing: -0.01em;
+  }
+  .highlight-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .highlight-list li {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px; font-weight: 500;
+  }
+  .about .lead { margin: 0; }
+  .basic-info { margin: 0 0 36px; }
+  .basic-info table { width: 100%; border-collapse: collapse; background: var(--card); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .basic-info th, .basic-info td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line); font-size: 15px; vertical-align: top; }
+  .basic-info th { width: 42%; color: var(--muted); font-weight: 600; }
+  .basic-info tr:last-child th, .basic-info tr:last-child td { border-bottom: none; }
+  .tips-list { margin: 0; padding-left: 20px; }
+  .tips-list li { margin: 0 0 8px; }
+  .prose { font-size: 17px; }
+  .guide-block { margin: 0 0 30px; }
+  .guide-block h2 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 26px;
+    margin: 0 0 14px; letter-spacing: -0.01em;
+  }
+  .rich p { margin: 0 0 15px; }
+  .bullets { margin: 0 0 15px; padding-left: 20px; }
+  .bullets li { margin: 0 0 8px; }
+  .note {
+    background: rgba(167, 82, 56, 0.08); border-left: 3px solid var(--accent);
+    padding: 12px 16px; border-radius: 8px; font-size: 15px; color: var(--ink);
+  }
+  .note p { margin: 0; }
+  .charm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .charm { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .charm h3 { margin: 0 0 8px; font-size: 16px; color: var(--accent); }
+  .charm p { margin: 0; font-size: 15px; color: var(--muted); }
+  .route-steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; counter-reset: step; }
+  .route-steps li { display: flex; gap: 14px; align-items: baseline; }
+  .route-time { font-weight: 700; color: var(--accent); white-space: nowrap; }
+  .route-text { font-size: 16px; }
+  .photo-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .photo-list li { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; font-size: 15px; }
+  .stay .lead { margin: 0 0 14px; }
+  .stay-cta, .reviews-cta, .map-cta, .related-cta { margin-top: 16px; }
+  .reviews-text { font-size: 16px; color: var(--muted); margin: 0 0 16px; }
+  .faq-list { display: grid; gap: 10px; }
+  .faq-item { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+  .faq-item summary { font-weight: 600; cursor: pointer; }
+  .faq-answer { margin-top: 10px; color: var(--muted); font-size: 15px; }
+  .faq-answer p { margin: 0; }
+  .related-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .related-list a {
+    color: var(--accent); text-decoration: none; font-weight: 500;
+    border-bottom: 1px solid rgba(167,82,56,0.3);
+  }
+  .related-list a:hover { border-bottom-color: var(--accent); }
+  .sources-verify-note { font-size: 14px; color: var(--muted); margin: 0 0 16px; }
+  .sources-list { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 12px; }
+  .sources-list a { font-weight: 600; text-decoration: none; color: var(--ink); }
+  .sources-list a:hover { color: var(--accent); }
+  .source-use { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .independent-box { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; }
+  .independent-box h3 { margin: 0 0 8px; font-size: 16px; }
+  .independent-box p { margin: 0; font-size: 14px; color: var(--muted); }
+  .site-footer { max-width: 760px; margin: 0 auto; padding: 30px 22px 50px; border-top: 1px solid var(--line); }
+  .footer-back { margin: 0 0 14px; }
+  .footer-back a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .footer-links { font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+  .footer-links a { color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-sep { margin: 0 8px; opacity: 0.5; }
+  .footer-meta { font-size: 12px; color: var(--muted); margin: 0; letter-spacing: 0.04em; }
+  @media (max-width: 640px) {
+    .hero-h1 { font-size: 30px; }
+    .highlight-list, .charm-grid { grid-template-columns: 1fr; }
+    .prose { font-size: 16px; }
+  }
+</style>

@@ -1,147 +1,409 @@
 ---
-import '../styles.css';
-import { Image, getImage } from 'astro:assets';
-import fortImage from '../assets/fort-view.jpg';
-import { TOPIC_UI, GROUP_LABELS, CHECKED, type Topic } from '../data/topic-types';
+import { formatDate } from '../lib/format';
+import { FULL, CITY, STATE, SITE_URL, ratings, address, geo, maps, PLUS_LINK, MAPS_SHARE_URL, sourcesByKeys } from '../data/site';
 import {
-  SITE_URL, PLUS_CODE, CITY, STATE, COUNTRY,
-  MAPS_SHARE_URL, MAPS_PLUS_URL, sourcesByKeys
-} from '../data/site';
-import { relatedFor, topicPath } from '../data/topics';
+  TOPIC_UI,
+  TOPIC_UI_HI,
+  GROUP_LABELS,
+  GROUP_LABELS_HI,
+  GROUP_INTROS,
+  GROUP_INTROS_HI,
+  CHECKED,
+  CHECKED_HI,
+  type Topic
+} from '../data/topic-types';
+import type { Locale } from '../i18n/types';
 
-interface Props { topic: Topic; }
-const { topic } = Astro.props;
+interface Props {
+  topic: Topic;
+  schema?: Topic['schema'];
+  locale?: Locale;
+}
 
-const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? SITE_URL;
-const canonical = `${siteUrl}${topicPath(topic.slug)}`;
-const abs = (p: string) => `${siteUrl}${p}`;
+const { topic, schema = 'article', locale = 'en' } = Astro.props;
+const isHi = locale === 'hi';
 
-const socialImage = await getImage({ src: fortImage, width: 1200, format: 'webp' });
-const hero = socialImage.src;
+const UI = isHi ? TOPIC_UI_HI : TOPIC_UI;
+const GROUP_LABELS_L = isHi ? GROUP_LABELS_HI : GROUP_LABELS;
+const GROUP_INTROS_L = isHi ? GROUP_INTROS_HI : GROUP_INTROS;
+const CHECKED_L = isHi ? CHECKED_HI : CHECKED;
+const SITE_NAME = isHi ? 'सिंकेरिम किला पर्यटक गाइड' : 'Sinquerim Fort Visitor Guide';
 
-const sections = topic.sections.map((section) => ({
-  heading: section.heading,
-  paragraphs: section.paragraphs ?? [],
-  bullets: section.bullets ?? [],
-  note: section.note ?? ''
-}));
-const related = relatedFor(topic);
+const f = formatDate;
+
+const siteUrl = Astro.site ? Astro.site.href.replace(/\/$/, '') : 'https://sinquerimfort.com';
+const homePath = isHi ? '/' : '/en/';
+const otherLocale: Locale = isHi ? 'en' : 'hi';
+const otherHref = `${siteUrl}${isHi ? `/en/${topic.slug}/` : `/${topic.slug}/`}`;
+const canonical = `${siteUrl}${isHi ? `/${topic.slug}/` : `/en/${topic.slug}/`}`;
+
+const posterUrl = maps.poster;
+const related = (await import('../data/topics')).relatedFor(topic, locale);
+
 const sources = sourcesByKeys(topic.sources);
-const groupLabel = GROUP_LABELS[topic.group];
-
-const graph: Record<string, unknown>[] = [
-  {
-    '@type': 'Article',
-    '@id': `${canonical}#article`,
-    headline: topic.h1,
-    name: topic.title,
-    description: topic.description,
-    url: canonical,
-    inLanguage: 'en',
-    about: { '@id': `${SITE_URL}/#attraction` },
-    isPartOf: { '@id': `${SITE_URL}/#website` },
-    publisher: { '@type': 'Organization', name: 'Sinquerim Fort Visitor Guide', url: SITE_URL }
-  },
-  {
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: TOPIC_UI.home, item: `${SITE_URL}/en/` },
-      { '@type': 'ListItem', position: 2, name: groupLabel, item: `${SITE_URL}/en/#guides` },
-      { '@type': 'ListItem', position: 3, name: topic.h1, item: canonical }
-    ]
-  },
-  {
-    '@type': 'FAQPage',
-    inLanguage: 'en',
-    mainEntity: topic.faqs.map((faq) => ({
-      '@type': 'Question',
-      name: faq.q,
-      acceptedAnswer: { '@type': 'Answer', text: faq.a }
-    }))
-  }
-];
-
-if (topic.schema === 'attraction') {
-  graph.push({
-    '@type': 'TouristAttraction',
-    '@id': `${canonical}#place`,
-    name: topic.h1,
-    description: topic.description,
-    url: canonical,
-    inLanguage: 'en'
-  });
-}
-
-if (topic.schema === 'photos') {
-  graph.push({
-    '@type': 'ImageObject',
-    '@id': `${canonical}#image`,
-    contentUrl: abs(hero),
-    name: 'Sinquerim Fort sea-facing laterite wall',
-    caption: TOPIC_UI.photosNote,
-    inLanguage: 'en'
-  });
-}
-
-const jsonLd = { '@context': 'https://schema.org', '@graph': graph };
+const datePublished = '2025-06-01';
+const dateModified = '2026-11-05';
 ---
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="generator" content={Astro.generator} />
-  <title>{topic.title}</title>
-  <meta name="description" content={topic.description} />
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
-  <link rel="canonical" href={canonical} />
-  <link rel="alternate" hreflang="en-IN" href={canonical} />
-  <link rel="alternate" hreflang="x-default" href={canonical} />
-  <meta property="og:type" content="article" /><meta property="og:title" content={topic.title} /><meta property="og:description" content={topic.description} /><meta property="og:url" content={canonical} /><meta property="og:site_name" content="Sinquerim Fort Visitor Guide" /><meta property="og:locale" content="en_IN" /><meta property="og:image" content={abs(hero)} /><meta property="og:image:alt" content="Sinquerim Fort in Candolim" />
-  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={topic.title} /><meta name="twitter:description" content={topic.description} /><meta name="twitter:image" content={abs(hero)} />
-  <meta name="theme-color" content="#143d4a" />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
-  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
-  <script is:inline>window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-HXM22WWPKP');</script>
-  {import.meta.env.PROD && <script is:inline>if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); }); }</script>}
-</head>
-<body>
-  <a class="skip-link" href="#top">{TOPIC_UI.home}</a>
-  <header class="relative z-20 w-full border-b border-[#172126]/15 bg-[#f8f4ec]"><div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-5 lg:px-10"><a href="/en/" class="flex items-center gap-3" aria-label="Sinquerim Fort English guide"><img src="/favicon.svg" alt="" width="38" height="38" /><span class="display text-lg font-bold tracking-tight">sinquerim<span class="text-[#a75238]">/</span>fort</span></a><nav class="flex items-center gap-3 text-xs font-semibold"><a class="rounded-full border border-[#172126]/25 px-4 py-2" href="/en/#guides">Guides</a><a class="rounded-full border border-[#172126]/25 px-4 py-2" href="/" hreflang="hi-IN" aria-label="हिन्दी गाइड">हिन्दी</a></nav></div></header>
+<html lang={isHi ? 'hi' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{topic.title}</title>
+    <meta name="description" content={topic.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={isHi ? 'hi-IN' : 'en-IN'} href={canonical} />
+    <link rel="alternate" hreflang={isHi ? 'en-IN' : 'hi-IN'} href={otherHref} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content={isHi ? 'hi_IN' : 'en_IN'} />
+    <meta property="og:title" content={topic.title} />
+    <meta property="og:description" content={topic.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={posterUrl} />
+    <meta property="og:image:alt" content={UI.ogAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={topic.title} />
+    <meta name="twitter:description" content={topic.description} />
+    <meta name="twitter:image" content={posterUrl} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <style is:global is:inline>{globalCss}</style>
+  </head>
+  <body>
+    <a class="skip-link" href="#top">{UI.home}</a>
+    <header class="site-header">
+      <a href={homePath} class="brand">
+        <span class="brand-main">sinquerim<span class="brand-slash">/</span>fort</span>
+      </a>
+      <nav class="site-nav">
+        <a href={`${homePath}#guides`} class="nav-guides">{UI.guides}</a>
+        <a href={otherHref} class="nav-switch" aria-label={UI.switchAria}>{UI.switchLabel}</a>
+      </nav>
+    </header>
 
-  <main id="top" tabindex="-1">
-    <nav aria-label="Breadcrumb" class="mx-auto max-w-4xl px-5 pt-8 text-xs text-[#657174] lg:px-10"><ol class="flex flex-wrap items-center gap-2"><li><a class="underline decoration-[#a75238]/40" href="/en/">{TOPIC_UI.home}</a></li><li aria-hidden="true">/</li><li><a class="underline decoration-[#a75238]/40" href="/en/#guides">{groupLabel}</a></li><li aria-hidden="true">/</li><li aria-current="page">{topic.h1}</li></ol></nav>
+    <main id="top" lang={isHi ? 'hi' : 'en'}>
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={homePath}>{UI.home}</a>
+        <span class="sep">/</span>
+        <a href={`${homePath}#guides`}>{UI.breadcrumbGuides}</a>
+        <span class="sep">/</span>
+        <span class="current">{topic.h1}</span>
+      </nav>
 
-    <section class="paper-grid px-5 pb-14 pt-12 lg:px-10"><div class="mx-auto max-w-4xl"><p class="eyebrow">{topic.kicker}</p><h1 class="display mt-4 text-[clamp(2.6rem,6vw,5rem)] font-bold leading-[.95]">{topic.h1}</h1><p class="mt-7 max-w-2xl text-lg leading-8 text-[#46565a]">{topic.lead}</p><div class="mt-8 flex flex-wrap gap-3"><a class="rounded-full bg-[#a75238] px-6 py-3 text-sm font-bold text-white transition hover:bg-[#143d4a]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{TOPIC_UI.mapsCta}</a><a class="rounded-full border border-[#172126]/20 px-5 py-3 text-sm" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{TOPIC_UI.plusCta}</a></div><p class="mt-5 text-[11px] leading-5 text-[#657174]">{TOPIC_UI.checkedLabel}: {CHECKED} · {TOPIC_UI.independentText}</p></div></section>
+      <section class="hero">
+        <p class="hero-kicker">{topic.kicker}</p>
+        <h1 class="hero-h1">{topic.h1}</h1>
+        <p class="hero-lead">{topic.lead}</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href={MAPS_SHARE_URL} target="_blank" rel="noopener">{UI.mapsCta}</a>
+          <a class="btn btn-secondary" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(PLUS_LINK)}`} target="_blank" rel="noopener">{UI.plusCta}</a>
+        </div>
+        <p class="hero-note"><strong>{UI.checkedLabel}:</strong> {CHECKED_L} · {UI.independentText}</p>
+      </section>
 
-    <section class="mx-auto max-w-4xl px-5 pb-14 lg:px-10"><div class="grid gap-4 rounded-2xl bg-white/75 p-6 shadow-sm sm:grid-cols-2"><div><p class="eyebrow">{TOPIC_UI.quickLocation}</p><p class="mt-2 text-sm leading-6">{PLUS_CODE}, {CITY}, {STATE}, {COUNTRY}</p></div><div><p class="eyebrow">{TOPIC_UI.quickCategory}</p><p class="mt-2 text-sm leading-6">Fort · Lower Aguada fortification</p></div><div><p class="eyebrow">{TOPIC_UI.quickVerify}</p><p class="mt-2 text-sm leading-6">Entrance, access, timings and any charge</p></div><div><p class="eyebrow">{TOPIC_UI.quickMaps}</p><p class="mt-2 text-sm leading-6"><a class="text-[#a75238] underline decoration-[#a75238]/40" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">Google Maps listing ↗</a></p></div></div></section>
+      <section class="quick-facts">
+        <h2 class="visually-hidden">{UI.quickTitle}</h2>
+        <div class="quick-grid">
+          <div><dt>{UI.quickLocation}</dt><dd>{topic.h1}</dd></div>
+          <div><dt>{UI.quickCategory}</dt><dd>{UI.quickCategoryValue}</dd></div>
+          <div><dt>{UI.quickVerify}</dt><dd>{UI.quickMaps}</dd></div>
+        </div>
+      </section>
 
-    <div class="mx-auto max-w-4xl px-5 lg:px-10">
-      {sections.map((section) => (
-        <section class="border-t border-[#172126]/15 py-10">
-          <h2 class="display text-3xl leading-tight">{section.heading}</h2>
-          {section.paragraphs.map((text) => <p class="mt-5 text-base leading-8 text-[#46565a]">{text}</p>)}
-          <ul class="mt-5 space-y-3">
-            {section.bullets.map((item) => <li class="flex gap-3 text-sm leading-7 text-[#46565a]"><span aria-hidden="true" class="text-[#a75238]">·</span><span>{item}</span></li>)}
-          </ul>
-          {section.note && <p class="mt-6 rounded-xl bg-[#e7dbc7]/70 p-4 text-xs leading-6 text-[#526064]">{section.note}</p>}
-        </section>
-      ))}
-    </div>
+      <article class="prose">
+        {topic.sections.map((section) => (
+          <section class="guide-block">
+            {section.heading && <h2>{section.heading}</h2>}
+            <div class="rich" set:html={f(section.paragraphs?.map((p) => `<p>${p}</p>`).join('') || '')} />
+            {section.bullets && (
+              <ul class="bullets" set:html={f(section.bullets.map((b) => `<li>${b}</li>`).join(''))} />
+            )}
+            {section.note && <p class="note" set:html={f(`<p>${section.note}</p>`)} />}
+          </section>
+        ))}
 
-    {topic.schema === 'photos' && (
-      <section class="mx-auto max-w-4xl px-5 pb-14 lg:px-10"><figure class="overflow-hidden rounded-2xl bg-[#143d4a] shadow-xl"><Image src={fortImage} width={1200} widths={[480, 800, 1200]} sizes="(max-width:1023px) 100vw, 60vw" format="webp" alt="Lower Aguada / Sinquerim sea-facing fortification, historic photograph 9 August 2024" loading="lazy" class="aspect-[1.2] w-full object-cover" /><figcaption class="bg-[#f8f4ec] px-5 py-4 text-xs leading-6 text-[#657174]">{TOPIC_UI.photosNote}</figcaption></figure></section>
-    )}
+        {schema === 'photos' && (
+          <figure class="guide-photo">
+            <img src={posterUrl} alt={UI.ogAlt} loading="lazy" width="1200" height="800" />
+            <figcaption>{UI.photosNote}</figcaption>
+          </figure>
+        )}
+      </article>
 
-    <section id="faq" class="border-t border-[#172126]/15 bg-white/60 px-5 py-16 lg:px-10"><div class="mx-auto max-w-4xl"><p class="eyebrow">FAQ</p><h2 class="display mt-3 text-4xl">{TOPIC_UI.faqTitle}</h2><div class="mt-8 divide-y divide-[#172126]/15">{topic.faqs.map((faq) => <details class="group py-5"><summary class="flex cursor-pointer list-none items-center justify-between gap-5 font-bold">{faq.q}<span class="text-2xl font-normal text-[#a75238] transition group-open:rotate-45">+</span></summary><p class="mt-4 max-w-2xl text-sm leading-7 text-[#657174]">{faq.a}</p></details>)}</div></div></section>
+      <section class="faq">
+        <p class="eyebrow">{UI.faqEyebrow}</p>
+        <h2>{UI.faqTitle}</h2>
+        <div class="faq-list">
+          {topic.faqs.map((faq) => (
+            <details class="faq-item">
+              <summary>{faq.q}</summary>
+              <div class="faq-answer" set:html={f(`<p>${faq.a}</p>`)} />
+            </details>
+          ))}
+        </div>
+      </section>
 
-    <section class="mx-auto max-w-4xl px-5 py-16 lg:px-10"><p class="eyebrow">Related</p><h2 class="display mt-3 text-4xl">{TOPIC_UI.relatedTitle}</h2><div class="mt-8 grid gap-3 sm:grid-cols-2">{related.map((item) => <a class="rounded-2xl border border-[#172126]/15 bg-white/70 p-5 text-sm font-semibold leading-6 hover:border-[#a75238]" href={topicPath(item.slug)}>{item.h1} ↗</a>)}</div><p class="mt-8"><a class="text-sm text-[#a75238] underline decoration-[#a75238]/40" href="/en/#guides">{TOPIC_UI.allGuidesCta}</a></p></section>
+      <section class="related">
+        <p class="eyebrow">{UI.relatedEyebrow}</p>
+        <h2>{UI.relatedTitle}</h2>
+        <ul class="related-list">
+          {related.map((item) => (
+            <li><a href={isHi ? `/${item.slug}/` : `/en/${item.slug}/`}>{item.h1}</a></li>
+          ))}
+        </ul>
+        <p class="related-cta"><a class="btn btn-secondary" href={`${homePath}#guides`}>{UI.allGuidesCta}</a></p>
+      </section>
 
-    <section id="sources" class="border-t border-[#172126]/15 bg-white/60 px-5 py-16 lg:px-10"><div class="mx-auto max-w-4xl"><p class="eyebrow">{TOPIC_UI.sourcesTitle}</p><h2 class="display mt-3 text-4xl">{TOPIC_UI.verifyTitle}</h2><p class="mt-5 max-w-2xl text-sm leading-7 text-[#526064]">{TOPIC_UI.verifyNote}</p><ul class="mt-8 divide-y divide-[#172126]/15">{sources.map((source) => <li class="py-4"><a class="font-bold underline decoration-[#a75238]/40" href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a><p class="mt-2 text-xs leading-6 text-[#657174]">{source.use}</p></li>)}</ul><div class="mt-8 rounded-2xl bg-[#e7dbc7]/70 p-6"><p class="font-bold">{TOPIC_UI.independentTitle}</p><p class="mt-2 text-sm leading-7 text-[#526064]">{TOPIC_UI.independentText}</p></div></div></section>
-  </main>
+      <section class="sources">
+        <p class="eyebrow">{UI.sourcesEyebrow}</p>
+        <h2>{UI.sourcesTitle}</h2>
+        <p class="sources-verify-note">{UI.verifyNote}</p>
+        <ul class="sources-list">
+          {sources.map((source) => (
+            <li>
+              <a href={source.url} target="_blank" rel="noopener">{source.label}</a>
+              <span class="source-use">{isHi ? source.useHi : source.use}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="independent-box">
+          <h3>{UI.independentTitle}</h3>
+          <p>{UI.independentText}</p>
+        </div>
+      </section>
+    </main>
 
-  <footer class="bg-[#172126] px-5 py-10 text-[#dbe1da] lg:px-10"><div class="mx-auto flex max-w-4xl flex-col gap-4 text-xs"><p><a class="text-[#d28f69]" href="/en/">{TOPIC_UI.backCta}</a></p><p><a class="text-[#d28f69]" href="/en/#guides">Browse all guides ↗</a> · <a class="text-[#d28f69]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">Google Maps ↗</a></p><p><a class="text-[#d28f69]" href="/en/privacy-policy">Privacy Policy</a> · <a class="text-[#d28f69]" href="/en/terms-of-service">Terms of Service</a> · <a class="text-[#d28f69]" href="/en/cookie-settings">Cookie Settings</a></p><p class="text-[#9aa9a7]">{TOPIC_UI.independentText}</p><p class="mono text-[#d28f69]">GOA / INDIA · {CHECKED}</p></div></footer>
-</body>
+    <footer class="site-footer">
+      <p class="footer-back"><a href={homePath}>{UI.backCta}</a></p>
+      <p class="footer-links">
+        <a href="https://www.google.com/maps/search/?api=1&query=Sinquerim+Fort+Candolim+Goa" target="_blank" rel="noopener">Google Maps</a>
+        <span class="footer-sep">·</span>
+        <a href={`${homePath}privacy-policy`}>{UI.privacyLabel}</a>
+        <span class="footer-sep">·</span>
+        <a href={`${homePath}terms-of-service`}>{UI.termsLabel}</a>
+        <span class="footer-sep">·</span>
+        <a href={`${homePath}cookie-settings`}>{UI.cookiesLabel}</a>
+      </p>
+      <p class="footer-meta">GOA / INDIA · {CHECKED_L}</p>
+    </footer>
+
+    <script type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': `${SITE_URL}/#website`,
+          'name': SITE_NAME,
+          'url': SITE_URL,
+          'publisher': { '@type': 'Organization', 'name': SITE_NAME }
+        },
+        {
+          '@type': 'WebPage',
+          '@id': canonical,
+          'url': canonical,
+          'name': topic.title,
+          'description': topic.description,
+          'inLanguage': isHi ? 'hi' : 'en',
+          'isPartOf': { '@id': `${SITE_URL}/#website` },
+          'about': { '@id': `${SITE_URL}/#site` },
+          'datePublished': datePublished,
+          'dateModified': dateModified,
+          'primaryImageOfPage': { '@id': `${canonical}#primaryimage` }
+        },
+        {
+          '@type': 'ImageObject',
+          '@id': `${canonical}#primaryimage`,
+          'url': posterUrl,
+          'name': UI.photoName
+        },
+        {
+          '@type': 'BreadcrumbList',
+          'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': UI.home, 'item': `${siteUrl}${homePath}` },
+            { '@type': 'ListItem', 'position': 2, 'name': UI.breadcrumbGuides, 'item': `${siteUrl}${homePath}#guides` },
+            { '@type': 'ListItem', 'position': 3, 'name': topic.h1, 'item': canonical }
+          ]
+        },
+        {
+          '@type': 'FAQPage',
+          'inLanguage': isHi ? 'hi' : 'en',
+          'mainEntity': topic.faqs.map((faq) => ({
+            '@type': 'Question',
+            'name': faq.q,
+            'acceptedAnswer': { '@type': 'Answer', 'text': faq.a }
+          }))
+        },
+        {
+          '@type': 'Article',
+          'headline': topic.h1,
+          'description': topic.description,
+          'inLanguage': isHi ? 'hi' : 'en',
+          'name': topic.title,
+          'author': { '@type': 'Organization', 'name': SITE_NAME },
+          'publisher': { '@type': 'Organization', 'name': SITE_NAME },
+          'datePublished': datePublished,
+          'dateModified': dateModified,
+          'image': { '@type': 'ImageObject', 'url': posterUrl, 'name': UI.photoName },
+          'about': { '@type': 'TouristAttraction', 'name': FULL, 'address': address, 'geo': geo },
+          'mainEntityOfPage': { '@id': canonical }
+        }
+      ]
+    })} />
+  </body>
 </html>
+
+<script is:inline define:vars={{ posterUrl, canonical, FULL, CITY, STATE, SITE_NAME, siteUrl }}>
+  (function () {
+    var d = document;
+    var picture = d.querySelector('figure.guide-photo');
+  })();
+</script>
+
+<style is:global>
+  :root {
+    --ink: #172126;
+    --muted: #526064;
+    --line: rgba(23, 33, 38, 0.1);
+    --accent: #a75238;
+    --bg: #f6f4ef;
+    --card: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans Devanagari', sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; }
+  .skip-link {
+    position: absolute; left: -999px; top: 0;
+    background: var(--ink); color: #fff; padding: 8px 14px; z-index: 50;
+  }
+  .skip-link:focus { left: 8px; top: 8px; }
+  .site-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px; border-bottom: 1px solid var(--line);
+    background: rgba(255,255,255,0.7); backdrop-filter: blur(6px);
+    position: sticky; top: 0; z-index: 20;
+  }
+  .brand-main { font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 20px; letter-spacing: -0.01em; }
+  .brand-slash { color: var(--accent); margin: 0 1px; }
+  .site-nav { display: flex; gap: 18px; align-items: center; font-size: 14px; }
+  .nav-guides { text-decoration: none; color: var(--muted); }
+  .nav-guides:hover { color: var(--accent); }
+  .nav-switch {
+    text-decoration: none; border: 1px solid var(--line); border-radius: 999px;
+    padding: 6px 14px; font-weight: 600; color: var(--ink);
+  }
+  .nav-switch:hover { border-color: var(--accent); color: var(--accent); }
+  main { max-width: 760px; margin: 0 auto; padding: 30px 22px 60px; }
+  .breadcrumb { font-size: 13px; color: var(--muted); margin-bottom: 26px; }
+  .breadcrumb a { color: var(--muted); text-decoration: none; }
+  .breadcrumb a:hover { color: var(--accent); }
+  .breadcrumb .sep { margin: 0 8px; opacity: 0.5; }
+  .breadcrumb .current { color: var(--ink); }
+  .hero { margin-bottom: 34px; }
+  .hero-kicker {
+    text-transform: uppercase; letter-spacing: 0.14em; font-size: 12px;
+    color: var(--accent); font-weight: 700; margin: 0 0 12px;
+  }
+  .hero-h1 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600;
+    font-size: 40px; line-height: 1.08; margin: 0 0 16px; letter-spacing: -0.02em;
+  }
+  .hero-lead { font-size: 18px; color: var(--muted); margin: 0 0 22px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 18px; }
+  .btn {
+    display: inline-block; padding: 12px 18px; border-radius: 12px; font-weight: 600;
+    text-decoration: none; font-size: 14px;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: #8c4230; }
+  .btn-secondary {
+    background: #fff; color: var(--ink); border: 1px solid var(--line);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-note { font-size: 13px; color: var(--muted); margin: 0; }
+  .quick-facts {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 18px 20px; margin: 0 0 36px;
+  }
+  .quick-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 0; }
+  .quick-grid dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 4px; }
+  .quick-grid dd { margin: 0; font-weight: 600; font-size: 15px; }
+  .prose { font-size: 17px; }
+  .guide-block { margin: 0 0 30px; }
+  .guide-block h2 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 26px;
+    margin: 0 0 14px; letter-spacing: -0.01em;
+  }
+  .rich p { margin: 0 0 15px; }
+  .bullets { margin: 0 0 15px; padding-left: 20px; }
+  .bullets li { margin: 0 0 8px; }
+  .note {
+    background: rgba(167, 82, 56, 0.08); border-left: 3px solid var(--accent);
+    padding: 12px 16px; border-radius: 8px; font-size: 15px; color: var(--ink);
+  }
+  .note p { margin: 0; }
+  .guide-photo { margin: 0 0 30px; }
+  .guide-photo img { width: 100%; border-radius: 14px; display: block; }
+  .guide-photo figcaption { font-size: 13px; color: var(--muted); margin-top: 10px; }
+  .faq, .related, .sources { margin: 0 0 36px; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.12em; font-size: 12px;
+    color: var(--accent); font-weight: 700; margin: 0 0 8px;
+  }
+  .faq h2, .related h2, .sources h2 {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 28px;
+    margin: 0 0 18px; letter-spacing: -0.01em;
+  }
+  .faq-list { display: grid; gap: 10px; }
+  .faq-item {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .faq-item summary { font-weight: 600; cursor: pointer; }
+  .faq-answer { margin-top: 10px; color: var(--muted); font-size: 15px; }
+  .faq-answer p { margin: 0; }
+  .related-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+  .related-list a {
+    color: var(--accent); text-decoration: none; font-weight: 500;
+    border-bottom: 1px solid rgba(167,82,56,0.3);
+  }
+  .related-list a:hover { border-bottom-color: var(--accent); }
+  .related-cta { margin-top: 16px; }
+  .sources-verify-note { font-size: 14px; color: var(--muted); margin: 0 0 16px; }
+  .sources-list { list-style: none; padding: 0; margin: 0 0 20px; display: grid; gap: 12px; }
+  .sources-list a { font-weight: 600; text-decoration: none; color: var(--ink); }
+  .sources-list a:hover { color: var(--accent); }
+  .source-use { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .independent-box {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 18px;
+  }
+  .independent-box h3 { margin: 0 0 8px; font-size: 16px; }
+  .independent-box p { margin: 0; font-size: 14px; color: var(--muted); }
+  .site-footer { max-width: 760px; margin: 0 auto; padding: 30px 22px 50px; border-top: 1px solid var(--line); }
+  .footer-back { margin: 0 0 14px; }
+  .footer-back a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  .footer-links { font-size: 13px; color: var(--muted); margin: 0 0 8px; }
+  .footer-links a { color: var(--muted); text-decoration: none; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-sep { margin: 0 8px; opacity: 0.5; }
+  .footer-meta { font-size: 12px; color: var(--muted); margin: 0; letter-spacing: 0.04em; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .hero-h1 { font-size: 30px; }
+    .quick-grid { grid-template-columns: 1fr; gap: 12px; }
+    .prose { font-size: 16px; }
+  }
+</style>

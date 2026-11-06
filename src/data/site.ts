@@ -32,6 +32,7 @@ export interface OfficialSource {
   label: string;
   url: string;
   use: string;
+  useHi: string;
 }
 
 export const OFFICIAL_SOURCES: OfficialSource[] = [
@@ -39,39 +40,46 @@ export const OFFICIAL_SOURCES: OfficialSource[] = [
     key: 'gt',
     label: 'Goa Tourism – Fort Aguada',
     url: GOVT_TOURISM_URL,
-    use: 'Published hilltop-fort timetable and the distinction between the citadel and the sea-level works.'
+    use: 'Published hilltop-fort timetable and the distinction between the citadel and the sea-level works.',
+    useHi: 'हिलटॉप क़िले का प्रकाशित समय-सारणी और क़िलेबंदी (सितादेल) तथा समुद्र-तल के कार्यों के बीच अंतर।'
   },
   {
     key: 'goa',
     label: 'Government of Goa – Sinquerim Beach',
     url: GOA_GOV_URL,
-    use: 'Regional description of Sinquerim Beach and coastal activities.'
+    use: 'Regional description of Sinquerim Beach and coastal activities.',
+    useHi: 'सिंकेरिम बीच और तटीय गतिविधियों का क्षेत्रीय विवरण।'
   },
   {
     key: 'ii',
     label: 'Incredible India – Fort Aguada',
     url: INCREDIBLE_INDIA_URL,
-    use: 'Cultural-heritage background for the wider Aguada complex.'
+    use: 'Cultural-heritage background for the wider Aguada complex.',
+    useHi: 'व्यापक अगुआदा परिसर के लिए सांस्कृतिक-धरोहर पृष्ठभूमि।'
   },
   {
     key: 'jail',
     label: 'Aguad Port & Jail Complex',
     url: AGUAD_JAIL_URL,
-    use: 'Independent heritage venue information for visits, exhibitions and bookings.'
+    use: 'Independent heritage venue information for visits, exhibitions and bookings.',
+    useHi: 'दौरे, प्रदर्शनियों और बुकिंग के लिए स्वतंत्र धरोहर-स्थल जानकारी।'
   },
   {
     key: 'asi',
     label: 'ASI protected-monument list, Goa',
     url: ASI_LIST_URL,
-    use: 'Separate listing name for the lower fortification wall at Candolim.'
+    use: 'Separate listing name for the lower fortification wall at Candolim.',
+    useHi: 'कांडोलिम में निचली क़िलाबंदी दीवार के लिए पृथक सूचीबद्ध नाम।'
   },
   {
     key: 'maps',
     label: 'Google Maps – Sinquerim Fort',
     url: MAPS_SHARE_URL,
-    use: 'Location, navigation and a dated third-party listing snapshot.'
+    use: 'Location, navigation and a dated third-party listing snapshot.',
+    useHi: 'स्थान, नेविगेशन और तिथि-युक्त तृतीय-पक्ष लिस्टिंग स्नैपशॉट।'
   }
 ];
 
 export const sourcesByKeys = (keys: string[]) =>
   OFFICIAL_SOURCES.filter((source) => keys.includes(source.key));
+
