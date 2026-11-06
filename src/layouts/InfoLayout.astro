@@ -1,0 +1,89 @@
+---
+import '../styles.css';
+import type { Content, Locale } from '../i18n/types';
+
+interface Props {
+  t: Content;
+  locale: Locale;
+  title: string;
+  eyebrow: string;
+  lead?: string;
+}
+const { t, locale, title, eyebrow, lead } = Astro.props;
+
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://sinquerimfort.com';
+const isHi = locale === 'hi';
+const path = Astro.url.pathname;
+const canonical = `${siteUrl}${path}`;
+const otherHref = isHi ? `${siteUrl}/en${path}` : `${siteUrl}${path.replace('/en', '')}`;
+const otherLang = isHi ? 'en-IN' : 'hi-IN';
+const ogLocale = isHi ? 'hi_IN' : 'en_IN';
+const ogLocaleAlt = isHi ? 'en_IN' : 'hi_IN';
+const homePath = isHi ? '/' : '/en/';
+
+const legalLinks: Array<[string, string]> = [
+  ['privacy-policy', t.footer.privacy],
+  ['terms-of-service', t.footer.terms],
+  ['cookie-settings', t.footer.cookies]
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: title,
+      inLanguage: t.lang,
+      isPartOf: { '@id': `${siteUrl}/#website` }
+    },
+    {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: isHi ? 'मुख्य गाइड' : 'Main guide', item: `${siteUrl}${homePath}` },
+        { '@type': 'ListItem', position: 2, name: title, item: canonical }
+      ]
+    }
+  ]
+};
+---
+<!doctype html>
+<html lang={t.lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="generator" content={Astro.generator} />
+  <title>{title}</title>
+  <meta name="description" content={lead ?? title} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.svg" />
+  <link rel="canonical" href={canonical} />
+  <link rel="alternate" hreflang={otherLang} href={otherHref} />
+  <link rel="alternate" hreflang="x-default" href={isHi ? canonical : otherHref} />
+  <meta property="og:title" content={title} /><meta property="og:description" content={lead ?? title} /><meta property="og:type" content="article" /><meta property="og:url" content={canonical} /><meta property="og:site_name" content={t.meta.siteName} /><meta property="og:locale" content={ogLocale} /><meta property="og:locale:alternate" content={ogLocaleAlt} />
+  <meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={title} /><meta name="twitter:description" content={lead ?? title} />
+  <meta name="theme-color" content="#143d4a" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
+  <script is:inline>window.dataLayer = window.dataLayer || []; function gtag(){window.dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-HXM22WWPKP');</script>
+  {import.meta.env.PROD && <script is:inline>if ('serviceWorker' in navigator) { window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); }); }</script>}
+</head>
+<body>
+  <a class="skip-link" href="#top">{isHi?'मुख्य सामग्री पर जाएँ':'Skip to content'}</a>
+  <header class="relative z-20 w-full border-b border-[#172126]/15 bg-[#f8f4ec]"><div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5 py-5 lg:px-10"><a href={homePath} class="flex items-center gap-3" aria-label={isHi?'सिंकेरिम किला होम':'Sinquerim Fort home'}><img src="/favicon.svg" alt="" width="38" height="38" /><span class="display text-lg font-bold tracking-tight">sinquerim<span class="text-[#a75238]">/</span>fort</span></a><nav class="flex items-center gap-3 text-xs font-semibold"><a class="rounded-full border border-[#172126]/25 px-4 py-2" href={homePath}>{isHi?'मुख्य गाइड':'Main guide'}</a><a class="rounded-full border border-[#172126]/25 px-4 py-2" href={otherHref} hreflang={otherLang} aria-label={isHi?'अंग्रेज़ी में बदलें':'हिन्दी में बदलें'}>{isHi?'English':'हिन्दी'}</a></nav></div></header>
+
+  <main id="top" tabindex="-1">
+    <section class="mx-auto max-w-3xl px-5 py-16 lg:px-10">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1 class="display mt-3 text-[clamp(2.4rem,5vw,4rem)] font-bold leading-[1]">{title}</h1>
+      {lead && <p class="mt-8 max-w-2xl text-base leading-8 text-[#46565a]">{lead}</p>}
+      <div class="mt-10"><slot /></div>
+      <p class="mt-14 border-t border-[#172126]/15 pt-8"><a class="text-sm text-[#a75238] underline decoration-[#a75238]/40" href={homePath}>{isHi?'← मुख्य गाइड पर वापस':'← Back to the main Sinquerim Fort guide'}</a></p>
+    </section>
+  </main>
+
+  <footer class="bg-[#172126] px-5 py-10 text-[#dbe1da] lg:px-10"><div class="mx-auto flex max-w-7xl flex-col gap-4 text-xs"><p class="flex flex-wrap gap-4">{legalLinks.map(([slug,label]) => <a class="text-[#d28f69]" href={`${homePath}${slug}`}>{label}</a>)}</p><p class="max-w-md text-[#9aa9a7]">{t.footer.disclaimer}</p><p class="mono text-[#d28f69]">{t.footer.region}</p></div></footer>
+</body>
+</html>

@@ -1,0 +1,15 @@
+---
+import InfoLayout from '../layouts/InfoLayout.astro';
+import PhotoCredit from '../layouts/PhotoCredit.astro';
+import { hi } from '../i18n/hi';
+import { MAPS_SHARE_URL, MAPS_PLUS_URL, GOVT_TOURISM_URL } from '../data/site';
+---
+<InfoLayout t={hi} locale="hi" title={hi.sources.h2} eyebrow={hi.sources.eyebrow} lead={hi.sources.intro}>
+  <ul class="divide-y divide-[#172126]/15">
+    <li class="py-5"><p class="font-bold">{hi.sources.ratingTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{hi.sources.ratingText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{hi.sources.ratingLink}</a></li>
+    <li class="py-5"><p class="font-bold">{hi.sources.locationTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{hi.sources.locationText}</p><div class="mt-3 flex flex-wrap gap-4"><a class="mono text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{hi.sources.listingLink}</a><a class="mono text-xs text-[#a75238]" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{hi.sources.plusLink}</a></div></li>
+    <li class="py-5"><p class="font-bold">{hi.sources.officialTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{hi.sources.officialText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={GOVT_TOURISM_URL} target="_blank" rel="noopener noreferrer">{hi.sources.officialLink}</a></li>
+    <li class="py-5"><p class="font-bold">स्थल-सीमा और आधिकारिक नाम</p><p class="mt-2 text-sm leading-7"><a class="underline" href="https://asi.nic.in/admin/whatsnew/download/585">ASI संरक्षित स्मारक सूची, गोवा तालिका, पृष्ठ 18</a>: ऊपर का किला और निचली दीवारें अलग दर्ज हैं। सूची वर्तमान प्रवेश-समय या शुल्क नहीं देती। <a class="underline" href="https://www.goa.gov.in/places/sinquerim-beach/">गोवा सरकार: सिंकेरिम बीच</a> — क्षेत्र का परिचय, हर गतिविधि का वर्तमान संचालन नहीं।</p><p class="mt-2 text-xs">रेटिंग की झलक 5 नवंबर 2026; 24 घंटे की सूचना 29 अक्टूबर 2026 की पुरानी झलक है।</p></li>
+    <li class="py-5"><p class="font-bold">{hi.sources.photoTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{hi.sources.photoText}</p><PhotoCredit hi={true}/><p class="mt-3 text-xs leading-6">कॉपीराइट लाइसेंस से लोगों की सहमति या स्थल की अलग अनुमति प्रमाणित नहीं होती।</p></li>
+  </ul>
+</InfoLayout>

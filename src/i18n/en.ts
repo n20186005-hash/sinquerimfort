@@ -216,6 +216,7 @@ export const en: Content = {
   "sources": {
     "eyebrow": "Sources & attribution",
     "h2": "Where this information comes from",
+    "intro": "This guide reports third-party map and rating snapshots. It does not collect or reproduce visitor reviews; figures can change and there is no automatic synchronisation.",
     "ratingTitle": "Maps snapshot · 5 November 2026",
     "ratingText": "Google Maps showed 4.5 / 5 from 20,473 reviews on 5 November 2026. This guide did not collect the reviews and does not reproduce their text. Figures can change; there is no automatic synchronization here.",
     "ratingLink": "View all reviews on Google Maps ↗",
@@ -240,7 +241,8 @@ export const en: Content = {
     "credit": "Historic photograph: iMahesh, CC BY-SA 4.0; exact source and licence above. Third-party Maps snapshots do not update automatically.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "cookies": "Cookie Settings"
+    "cookies": "Cookie Settings",
+    "about": "Copyright & privacy"
   },
   "legal": {
     "privacy-policy": {

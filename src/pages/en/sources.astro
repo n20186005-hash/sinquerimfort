@@ -1,0 +1,15 @@
+---
+import InfoLayout from '../../layouts/InfoLayout.astro';
+import PhotoCredit from '../../layouts/PhotoCredit.astro';
+import { en } from '../../i18n/en';
+import { MAPS_SHARE_URL, MAPS_PLUS_URL, GOVT_TOURISM_URL } from '../../data/site';
+---
+<InfoLayout t={en} locale="en" title={en.sources.h2} eyebrow={en.sources.eyebrow} lead={en.sources.intro}>
+  <ul class="divide-y divide-[#172126]/15">
+    <li class="py-5"><p class="font-bold">{en.sources.ratingTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{en.sources.ratingText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{en.sources.ratingLink}</a></li>
+    <li class="py-5"><p class="font-bold">{en.sources.locationTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{en.sources.locationText}</p><div class="mt-3 flex flex-wrap gap-4"><a class="mono text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{en.sources.listingLink}</a><a class="mono text-xs text-[#a75238]" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{en.sources.plusLink}</a></div></li>
+    <li class="py-5"><p class="font-bold">{en.sources.officialTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{en.sources.officialText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={GOVT_TOURISM_URL} target="_blank" rel="noopener noreferrer">{en.sources.officialLink}</a></li>
+    <li class="py-5"><p class="font-bold">Site scope and official names</p><p class="mt-2 text-sm leading-7"><a class="underline" href="https://asi.nic.in/admin/whatsnew/download/585">ASI protected-monument list, Goa table, page 18</a>: Upper fortress and lower fortification are listed separately. The list does not confirm current gate hours or fees. <a class="underline" href="https://www.goa.gov.in/places/sinquerim-beach/">Government of Goa: Sinquerim Beach</a> — Regional overview, not current operation of every activity.</p><p class="mt-2 text-xs">Rating snapshot checked 5 November 2026; the 24-hour listing is an earlier 29 October 2026 snapshot.</p></li>
+    <li class="py-5"><p class="font-bold">{en.sources.photoTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{en.sources.photoText}</p><PhotoCredit hi={false}/><p class="mt-3 text-xs leading-6">Copyright licensing does not establish separate model consent or site permission.</p></li>
+  </ul>
+</InfoLayout>
