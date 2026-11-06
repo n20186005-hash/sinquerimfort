@@ -5,6 +5,12 @@ import fortImage from '../assets/fort-view.jpg';
 import PhotoCredit from './PhotoCredit.astro';
 import PrivacyNotice from './PrivacyNotice.astro';
 import type { Content, Locale } from '../i18n/types';
+import {
+  FULL, CITY, STATE, PLUS_CODE, LAT, LNG,
+  MAPS_SHARE_URL, MAPS_PLUS_URL, GOVT_TOURISM_URL,
+  RATING_VALUE, RATING_COUNT_LABEL, mapsEmbedSrc
+} from '../data/site';
+import TopicLinks from '../components/TopicLinks.astro';
 
 declare global { interface Window { dataLayer: unknown[]; } }
 
@@ -20,19 +26,10 @@ const otherHref = `${siteUrl}${otherPath}`;
 const isHi = locale === 'hi';
 
 /* ---------- Single-attraction entity binding ---------- */
-const FULL = 'Sinquerim Fort';
-const CITY = 'Candolim';
-const STATE = 'Goa';
-const LAT = 15.498447;
-const LNG = 73.766356;
-const MAPS_SHARE_URL = 'https://maps.app.goo.gl/FjmgmJePsTwafjCB8';
-const MAPS_PLUS_URL = 'https://www.google.com/maps/search/?api=1&query=FQX8%2B9HJ%2C%20Candolim%2C%20Goa%2C%20India';
-const MAPS_EMBED_SRC = 'https://www.google.com/maps?q=15.498447,73.766356&output=embed&hl='+(isHi?'hi':'en');
-const GOVT_TOURISM_URL = 'https://goa-tourism.com/fort/fort-aguada/';
+const CATEGORY = isHi ? 'किला' : 'Fort';
+const MAPS_EMBED_SRC = mapsEmbedSrc(isHi);
 
 /* ---------- Google Maps rating snapshot (display only, never in JSON-LD) ---------- */
-const RATING_VALUE = '4.5';
-const RATING_COUNT_LABEL = '20,444';
 
 const socialImage=await getImage({src:fortImage,width:1200,format:'webp'});
 const hero=socialImage.src;
@@ -47,11 +44,13 @@ const jsonLd = {
       '@id': abs('/#attraction'),
       name: FULL,
       alternateName: ['Lower Aguada Fortification', 'Fortification Wall of Auguda Fortress (Lower)', 'सिंकेरिम किला'],
+      additionalType: 'https://schema.org/LandmarksOrHistoricalBuildings',
+      category: CATEGORY,
       description: t.meta.schemaDescription,
       url: canonical,
       inLanguage: t.lang,
       image: [abs(hero)],
-      address: { '@type': 'PostalAddress', addressLocality: CITY, addressRegion: STATE, addressCountry: 'IN' },
+      address: { '@type': 'PostalAddress', streetAddress: PLUS_CODE, addressLocality: CITY, addressRegion: STATE, addressCountry: 'IN' },
       geo: { '@type': 'GeoCoordinates', latitude: LAT, longitude: LNG },
       hasMap: MAPS_SHARE_URL,
 
@@ -103,8 +102,9 @@ const jsonLd = {
     <section id="visit" class="paper-grid px-5 py-24 lg:px-10"><div class="mx-auto max-w-7xl"><p class="eyebrow">{t.visit.eyebrow}</p><h2 class="display mt-3 max-w-3xl text-5xl leading-none lg:text-6xl">{t.visit.h2a}<br/><span class="text-[#a75238]">{t.visit.h2b}</span></h2><div class="mt-14 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{t.visit.cards.map((card) => <article class="rounded-2xl bg-white/70 p-7"><span class="eyebrow">{card.no}</span><h3 class="mt-5 text-xl font-bold">{card.title}</h3><p class="mt-3 text-sm leading-6 text-[#526064]">{card.text}</p></article>)}</div></div></section>
     <section id="nearby" class="mx-auto max-w-7xl px-5 py-24 lg:px-10"><div class="grid gap-14 lg:grid-cols-[.75fr_1.25fr]"><div><p class="eyebrow">{t.nearby.eyebrow}</p><h2 class="display mt-3 text-5xl leading-none lg:text-6xl">{t.nearby.h2a}<br/><span class="text-[#a75238]">{t.nearby.h2b}</span></h2><p class="mt-6 max-w-md text-sm leading-6 text-[#657174]">{t.nearby.cluster}</p></div><div class="space-y-0">{t.nearby.items.map((item) => <div class="section-rule flex items-start justify-between gap-6 py-6"><div><h3 class="font-bold">{item.title}</h3><p class="mt-2 max-w-md text-sm leading-6 text-[#657174]">{item.text}</p></div><span class="mono text-xs text-[#a75238]">{item.no}</span></div>)}</div></div></section>
     <section id="map" class="bg-[#e7dbc7] px-5 py-20 lg:px-10"><div class="mx-auto max-w-7xl"><div class="flex flex-wrap items-end justify-between gap-6"><div><p class="eyebrow">{t.map.eyebrow}</p><h2 class="display mt-3 text-5xl">{t.map.h2}</h2><p class="mt-3 text-sm text-[#526064]">{t.map.coords}</p><p class="mt-2 text-xs text-[#657174]">{t.map.note} <a class="text-[#a75238] underline decoration-[#a75238]/40" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{t.map.search}</a></p></div><a class="rounded-full bg-[#143d4a] px-6 py-3 text-sm font-bold text-white" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.map.open}</a></div><div class="mt-8 overflow-hidden rounded-2xl bg-[#143d4a] shadow-xl"><iframe title={t.map.iframeTitle} src={MAPS_EMBED_SRC} width="100%" height="450" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div></div></section>
+    <TopicLinks locale={locale} />
     <section id="faq" class="mx-auto max-w-4xl px-5 py-24 lg:px-10"><p class="eyebrow">{t.faq.eyebrow}</p><h2 class="display mt-3 text-5xl">{t.faq.h2}</h2><div class="mt-10 divide-y divide-[#172126]/15">{t.faq.items.map((item) => <details class="group py-5"><summary class="flex cursor-pointer list-none items-center justify-between gap-5 font-bold">{item.q}<span class="text-2xl font-normal text-[#a75238] transition group-open:rotate-45">+</span></summary><p class="mt-4 max-w-2xl text-sm leading-7 text-[#657174]">{item.a}</p></details>)}</div></section>
-    <section id="sources" class="border-t border-[#172126]/15 bg-white/60 px-5 py-20 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">{t.sources.eyebrow}</p><h2 class="display mt-3 text-4xl leading-tight lg:text-5xl">{t.sources.h2}</h2><ul class="mt-8 divide-y divide-[#172126]/15"><li class="py-5"><p class="font-bold">{t.sources.ratingTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.ratingText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.sources.ratingLink}</a></li><li class="py-5"><p class="font-bold">{t.sources.locationTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.locationText}</p><div class="mt-3 flex flex-wrap gap-4"><a class="mono text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.sources.listingLink}</a><a class="mono text-xs text-[#a75238]" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{t.sources.plusLink}</a></div></li><li class="py-5"><p class="font-bold">{t.sources.officialTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.officialText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={GOVT_TOURISM_URL} target="_blank" rel="noopener noreferrer">{t.sources.officialLink}</a></li><li class="py-5"><p class="font-bold">{isHi?'स्थल-सीमा और आधिकारिक नाम':'Site scope and official names'}</p><p class="mt-2 text-sm leading-7"><a class="underline" href="https://asi.nic.in/admin/whatsnew/download/585">{isHi?'ASI संरक्षित स्मारक सूची, गोवा तालिका, पृष्ठ 18':'ASI protected-monument list, Goa table, page 18'}</a>: {isHi?'ऊपर का किला और निचली दीवारें अलग दर्ज हैं। सूची वर्तमान प्रवेश-समय या शुल्क नहीं देती।':'Upper fortress and lower fortification are listed separately. The list does not confirm current gate hours or fees.'} <a class="underline" href="https://www.goa.gov.in/places/sinquerim-beach/">{isHi?'गोवा सरकार: सिंकेरिम बीच':'Government of Goa: Sinquerim Beach'}</a> — {isHi?'क्षेत्र का परिचय, हर गतिविधि का वर्तमान संचालन नहीं।':'Regional overview, not current operation of every activity.'}</p><p class="mt-2 text-xs">{isHi?'स्रोत जाँच: 29 अक्टूबर 2026।':'Sources checked 29 October 2026.'}</p></li><li class="py-5"><p class="font-bold">{t.sources.photoTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.photoText}</p><PhotoCredit hi={isHi}/><p class="mt-3 text-xs leading-6">{isHi?'कॉपीराइट लाइसेंस से लोगों की सहमति या स्थल की अलग अनुमति प्रमाणित नहीं होती।':'Copyright licensing does not establish separate model consent or site permission.'}</p></li></ul></div></section>
+    <section id="sources" class="border-t border-[#172126]/15 bg-white/60 px-5 py-20 lg:px-10"><div class="mx-auto max-w-5xl"><p class="eyebrow">{t.sources.eyebrow}</p><h2 class="display mt-3 text-4xl leading-tight lg:text-5xl">{t.sources.h2}</h2><ul class="mt-8 divide-y divide-[#172126]/15"><li class="py-5"><p class="font-bold">{t.sources.ratingTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.ratingText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.sources.ratingLink}</a></li><li class="py-5"><p class="font-bold">{t.sources.locationTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.locationText}</p><div class="mt-3 flex flex-wrap gap-4"><a class="mono text-xs text-[#a75238]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.sources.listingLink}</a><a class="mono text-xs text-[#a75238]" href={MAPS_PLUS_URL} target="_blank" rel="noopener noreferrer">{t.sources.plusLink}</a></div></li><li class="py-5"><p class="font-bold">{t.sources.officialTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.officialText}</p><a class="mono mt-3 inline-block text-xs text-[#a75238]" href={GOVT_TOURISM_URL} target="_blank" rel="noopener noreferrer">{t.sources.officialLink}</a></li><li class="py-5"><p class="font-bold">{isHi?'स्थल-सीमा और आधिकारिक नाम':'Site scope and official names'}</p><p class="mt-2 text-sm leading-7"><a class="underline" href="https://asi.nic.in/admin/whatsnew/download/585">{isHi?'ASI संरक्षित स्मारक सूची, गोवा तालिका, पृष्ठ 18':'ASI protected-monument list, Goa table, page 18'}</a>: {isHi?'ऊपर का किला और निचली दीवारें अलग दर्ज हैं। सूची वर्तमान प्रवेश-समय या शुल्क नहीं देती।':'Upper fortress and lower fortification are listed separately. The list does not confirm current gate hours or fees.'} <a class="underline" href="https://www.goa.gov.in/places/sinquerim-beach/">{isHi?'गोवा सरकार: सिंकेरिम बीच':'Government of Goa: Sinquerim Beach'}</a> — {isHi?'क्षेत्र का परिचय, हर गतिविधि का वर्तमान संचालन नहीं।':'Regional overview, not current operation of every activity.'}</p><p class="mt-2 text-xs">{isHi?'रेटिंग की झलक 5 नवंबर 2026; 24 घंटे की सूचना 29 अक्टूबर 2026 की पुरानी झलक है।':'Rating snapshot checked 5 November 2026; the 24-hour listing is an earlier 29 October 2026 snapshot.'}</p></li><li class="py-5"><p class="font-bold">{t.sources.photoTitle}</p><p class="mt-2 text-sm leading-6 text-[#526064]">{t.sources.photoText}</p><PhotoCredit hi={isHi}/><p class="mt-3 text-xs leading-6">{isHi?'कॉपीराइट लाइसेंस से लोगों की सहमति या स्थल की अलग अनुमति प्रमाणित नहीं होती।':'Copyright licensing does not establish separate model consent or site permission.'}</p></li></ul></div></section>
     <PrivacyNotice hi={isHi} />
   </main>
   <footer class="bg-[#172126] px-5 py-10 text-[#dbe1da] lg:px-10"><div class="mx-auto flex max-w-7xl flex-col justify-between gap-6 text-xs md:flex-row"><p>{t.footer.copyright}</p><p class="max-w-md text-[#9aa9a7]">{t.footer.disclaimer}</p><p class="mono text-[#d28f69]">{t.footer.region}</p></div><div class="mx-auto mt-6 flex max-w-7xl flex-wrap gap-5 text-xs"><a class="text-[#d28f69]" href={MAPS_SHARE_URL} target="_blank" rel="noopener noreferrer">{t.footer.maps}</a><a class="text-[#d28f69]" href={GOVT_TOURISM_URL} target="_blank" rel="noopener noreferrer">{t.footer.tourism}</a><a class="text-[#d28f69]" href="#privacy">{isHi?'गोपनीयता':'Privacy'}</a><a class="text-[#d28f69]" href="#sources">{t.footer.sources}</a><a class="text-[#d28f69]" href="#reviews">{t.footer.reviews}</a><a class="text-[#d28f69]" href={otherPath} hreflang={isHi ? 'en-IN' : 'hi-IN'} rel="alternate">{t.switchLabel}</a></div><p class="mx-auto mt-8 max-w-7xl text-[10px] leading-5 text-[#b4c5c3]">{t.footer.credit}</p></footer>

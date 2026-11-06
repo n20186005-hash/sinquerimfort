@@ -6,10 +6,10 @@ export const en: Content = {
   "switchLabel": "हिन्दी",
   "switchAria": "हिन्दी में बदलें",
   "meta": {
-    "title": "Sinquerim Fort: Lower Aguada, Hours & Access | Independent Guide",
-    "description": "Identify the lower shore-side Sinquerim Fort in Candolim. Compare the dated 24-hour Maps listing with unconfirmed manager hours, check fees and distinguish upper Fort Aguada.",
-    "ogTitle": "Sinquerim Fort: Lower Aguada, Hours & Access | Independent Guide",
-    "ogDescription": "Identify the lower shore-side Sinquerim Fort in Candolim. Compare the dated 24-hour Maps listing with unconfirmed manager hours, check fees and distinguish upper Fort Aguada.",
+    "title": "Sinquerim Fort Goa: Timings, Entry Fee, Location & Visitor Guide",
+    "description": "Planning a visit to Sinquerim Fort in Candolim, Goa? Find its location, access guidance, nearby attractions, photos and what to verify before visiting.",
+    "ogTitle": "Sinquerim Fort Goa: Timings, Entry Fee, Location & Visitor Guide",
+    "ogDescription": "Planning a visit to Sinquerim Fort in Candolim, Goa? Find its location, access guidance, nearby attractions, photos and what to verify before visiting.",
     "schemaDescription": "Independent visitor guide to the lower shore-side Aguada fortification at Sinquerim, distinct from the hilltop fort; current hours and fees need confirmation.",
     "siteName": "Sinquerim Fort Visitor Guide",
     "heroImageAlt": "Lower Aguada / Sinquerim sea-facing fortification, historic photograph 9 August 2024",
@@ -33,7 +33,7 @@ export const en: Content = {
     "ctaPrimary": "Plan your pause ↓",
     "ctaBadge": "Confirm hours and fees",
     "ratingUnit": "Google Maps reviews",
-    "ratingSource": "Third-party Google Maps snapshot · checked 29 October 2026 ·",
+    "ratingSource": "Third-party Google Maps snapshot · checked 5 November 2026 ·",
     "ratingLink": "View all reviews on Google Maps ↗",
     "captionLeft": "Lower Aguada Fort / Sinquerim Beach",
     "captionRight": "Historic photograph · 2024"
@@ -49,7 +49,7 @@ export const en: Content = {
       {
         "label": "Identity",
         "value": "Lower Aguada",
-        "note": "Distinct ASI listing"
+        "note": "Fort · distinct ASI listing"
       },
       {
         "label": "Location",
@@ -59,7 +59,7 @@ export const en: Content = {
       {
         "label": "Rating",
         "value": "4.5 / 5",
-        "note": "20,444 Google Maps reviews · 29 October 2026"
+        "note": "20,473 Google Maps reviews · 5 November 2026"
       },
       {
         "label": "Hours",
@@ -73,7 +73,7 @@ export const en: Content = {
     "h2a": "Sinquerim Fort reviews",
     "h2b": "& rating",
     "intro": "This is an unofficial guide. The score and review total are quoted from the Google Maps listing for Sinquerim Fort; the reviews themselves stay on Google and are not reproduced here.",
-    "source": "Google Maps showed 4.5 / 5 from 20,444 reviews on 29 October 2026. This guide did not collect the reviews and does not reproduce their text. Figures can change; there is no automatic synchronization here.",
+    "source": "Google Maps showed 4.5 / 5 from 20,473 reviews on 5 November 2026. This guide did not collect the reviews and does not reproduce their text. Figures can change; there is no automatic synchronization here.",
     "cta": "View all reviews on Google Maps ↗"
   },
   "quote": {
@@ -103,7 +103,7 @@ export const en: Content = {
       {
         "no": "02 / Timing",
         "title": "Which site’s hours?",
-        "text": "Google Maps showed 24-hour access on 29 October 2026, but current manager-confirmed hours for the lower Sinquerim site have not been established. GTDC’s 09:30–18:00 timetable is for the hilltop Fort Aguada, not this lower site. Confirm the actual entrance and day’s access before travelling."
+        "text": "An earlier Google Maps snapshot (checked 29 October 2026) listed 24-hour access, but current manager-confirmed hours for the lower Sinquerim site have not been established. GTDC’s 09:30–18:00 timetable is for the hilltop Fort Aguada, not this lower site. Confirm the actual entrance and day’s access before travelling."
       },
       {
         "no": "03 / Cost",
@@ -153,7 +153,7 @@ export const en: Content = {
   "map": {
     "eyebrow": "Coordinates, not guesswork",
     "h2": "Find Sinquerim Fort.",
-    "coords": "Candolim, Goa, India · 15.498447, 73.766356",
+    "coords": "FQX8+9HJ, Candolim, Goa, India · 15.498447, 73.766356",
     "note": "The map pin does not confirm parking or an open entrance. Map data © Google.",
     "search": "Search FQX8+9HJ, Candolim on Google Maps ↗",
     "open": "Open in Google Maps ↗",
@@ -173,7 +173,7 @@ export const en: Content = {
       },
       {
         "q": "What are the opening hours of Sinquerim Fort?",
-        "a": "Google Maps showed 24-hour access on 29 October 2026, but current manager-confirmed hours for the lower Sinquerim site have not been established. GTDC’s 09:30–18:00 timetable is for the hilltop Fort Aguada, not this lower site. Confirm the actual entrance and day’s access before travelling."
+        "a": "An earlier Google Maps snapshot (checked 29 October 2026) listed 24-hour access, but current manager-confirmed hours for the lower Sinquerim site have not been established. GTDC’s 09:30–18:00 timetable is for the hilltop Fort Aguada, not this lower site. Confirm the actual entrance and day’s access before travelling."
       },
       {
         "q": "How long should I spend here?",
@@ -216,11 +216,11 @@ export const en: Content = {
   "sources": {
     "eyebrow": "Sources & attribution",
     "h2": "Where this information comes from",
-    "ratingTitle": "Maps snapshot · 29 October 2026",
-    "ratingText": "Google Maps showed 4.5 / 5 from 20,444 reviews on 29 October 2026. This guide did not collect the reviews and does not reproduce their text. Figures can change; there is no automatic synchronization here.",
+    "ratingTitle": "Maps snapshot · 5 November 2026",
+    "ratingText": "Google Maps showed 4.5 / 5 from 20,473 reviews on 5 November 2026. This guide did not collect the reviews and does not reproduce their text. Figures can change; there is no automatic synchronization here.",
     "ratingLink": "View all reviews on Google Maps ↗",
     "locationTitle": "Location & map data",
-    "locationText": "Candolim, Goa, India · 15.498447, 73.766356 · The map pin does not confirm parking or an open entrance. Map data © Google.",
+    "locationText": "FQX8+9HJ, Candolim, Goa, India · 15.498447, 73.766356 · The map pin does not confirm parking or an open entrance. Map data © Google.",
     "listingLink": "Google Maps listing ↗",
     "plusLink": "Search by Plus Code ↗",
     "officialTitle": "Official tourism information",

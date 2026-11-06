@@ -1,0 +1,37 @@
+---
+import { TOPIC_COUNT, topicPath, topicsByGroup, groupOrder } from '../data/topics';
+import { GROUP_LABELS, GROUP_INTROS, HI_TOPIC_TEASER } from '../data/topic-types';
+import type { Locale } from '../i18n/types';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const isEnglish = locale === 'en';
+const groups = isEnglish
+  ? groupOrder.map((group) => ({
+      label: GROUP_LABELS[group],
+      intro: GROUP_INTROS[group],
+      topics: topicsByGroup(group)
+    }))
+  : [];
+---
+<section id="guides" class="border-y border-[#172126]/10 bg-white/60 px-5 py-20 lg:px-10">
+  <div class="mx-auto max-w-7xl">
+    <p class="eyebrow">{isEnglish ? 'Independent English guides' : 'अतिरिक्त गाइड'}</p>
+    <h2 class="display mt-4 text-4xl leading-tight lg:text-5xl">{isEnglish ? 'Sinquerim Fort guides' : HI_TOPIC_TEASER.title}</h2>
+    <p class="mt-5 max-w-2xl text-sm leading-7 text-[#526064]">{isEnglish ? `${TOPIC_COUNT} separate English guides on timings, tickets, location, routes, nearby places, food, history and trip plans. Each one answers a single question and states what still needs confirming.` : HI_TOPIC_TEASER.text}</p>
+    <div class="mt-12 grid gap-8 md:grid-cols-2">
+      {groups.map((entry) => (
+        <div class="rounded-2xl bg-white/80 p-7 shadow-sm">
+          <h3 class="display text-2xl">{entry.label}</h3>
+          <p class="mt-2 text-xs leading-6 text-[#657174]">{entry.intro}</p>
+          <ul class="mt-5 space-y-2">
+            {entry.topics.map((topic) => (
+              <li><a class="text-sm leading-6 underline decoration-[#a75238]/40 underline-offset-4 hover:text-[#a75238]" href={topicPath(topic.slug)}>{topic.h1}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    {!isEnglish && <p class="mt-8"><a class="rounded-full border border-[#172126]/25 px-5 py-3 text-sm font-bold" href="/en/#guides" hreflang="en-IN">{HI_TOPIC_TEASER.cta}</a></p>}
+  </div>
+</section>
