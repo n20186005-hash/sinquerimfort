@@ -83,3 +83,25 @@ export const OFFICIAL_SOURCES: OfficialSource[] = [
 export const sourcesByKeys = (keys: string[]) =>
   OFFICIAL_SOURCES.filter((source) => keys.includes(source.key));
 
+/* Derived facts consumed by the guide/topic layouts (declared last so all
+   base constants above are initialised before they are referenced). */
+export const PLUS_LINK = `${PLUS_CODE}, ${CITY}, ${STATE}, ${COUNTRY}`;
+export const address = {
+  '@type': 'PostalAddress',
+  addressLocality: CITY,
+  addressRegion: STATE,
+  addressCountry: COUNTRY
+};
+export const geo = {
+  '@type': 'GeoCoordinates',
+  latitude: LAT,
+  longitude: LNG
+};
+export const ratings = {
+  value: RATING_VALUE,
+  count: RATING_COUNT_LABEL
+};
+export const maps = {
+  poster: `${SITE_URL}/fort-view.jpg`
+};
+
