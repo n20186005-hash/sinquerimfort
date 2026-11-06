@@ -237,6 +237,131 @@ export const en: Content = {
     "tourism": "Goa Tourism Portal ↗",
     "sources": "Sources & attribution",
     "reviews": "Reviews & rating",
-    "credit": "Historic photograph: iMahesh, CC BY-SA 4.0; exact source and licence above. Third-party Maps snapshots do not update automatically."
+    "credit": "Historic photograph: iMahesh, CC BY-SA 4.0; exact source and licence above. Third-party Maps snapshots do not update automatically.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "cookies": "Cookie Settings"
+  },
+  "legal": {
+    "privacy-policy": {
+      "title": "Privacy Policy",
+      "updated": "Updated 5 November 2026",
+      "intro": "This independent, noncommercial visitor guide is not operated by the site manager or a ticket service. This policy explains what data is processed when you visit and where it goes.",
+      "sections": [
+        {
+          "heading": "Who is responsible",
+          "paragraphs": [
+            "This guide is published as an independent, noncommercial tourism and cultural information project. \"Nonprofit\" describes its purpose, not registered charitable status. There is no company, operator or membership scheme behind it."
+          ]
+        },
+        {
+          "heading": "Data processed automatically",
+          "paragraphs": [
+            "Cloudflare provides hosting and security and may process connection and technical data such as IP address, request time and browser or device details.",
+            "When hosting loads a Cloudflare Web Analytics browser beacon, it measures visits, page views and load performance and may process page paths, referring sites and browser or device information. It runs independently of Google Analytics.",
+            "Google Analytics loads automatically to measure page use and may use cookies and connection data."
+          ]
+        },
+        {
+          "heading": "Cookies",
+          "paragraphs": [
+            "Google Analytics sets cookies to distinguish visitors and sessions. Cloudflare sets strictly necessary cookies for security and delivery. See Cookie Settings for the categories in use."
+          ]
+        },
+        {
+          "heading": "Embedded content",
+          "paragraphs": [
+            "Google Fonts and the embedded Google Maps map connect to Google servers. The historic photograph and its resized versions load from this site. No device location is requested or used for analytics."
+          ]
+        },
+        {
+          "heading": "Third-party policies",
+          "paragraphs": [
+            "Google and Cloudflare operate their own services and data policies, which apply to the data they process. This guide does not receive the raw analytics or beacon data from those providers in a usable form."
+          ]
+        },
+        {
+          "heading": "Your rights and contact",
+          "paragraphs": [
+            "Depending on where you are, you may have rights to access, correct or delete personal data, or to object to certain processing, under laws such as the EU GDPR or India's DPDP Act. Because this site has no account, sign-up or contact form, the practical step is to adjust your browser or device settings and to review the relevant provider policies linked above. This guide does not itself store a profile of you."
+          ]
+        }
+      ]
+    },
+    "terms-of-service": {
+      "title": "Terms of Service",
+      "updated": "Updated 5 November 2026",
+      "intro": "These terms describe how you may use this independent, noncommercial guide. By using the site you accept them.",
+      "sections": [
+        {
+          "heading": "Informational only",
+          "paragraphs": [
+            "All content is provided as general travel and cultural information. It is an independent guide, not the official site manager, a ticket seller or an official tourism portal. Upper Fort Aguada, the lighthouse, the jail complex and the beaches are separate destinations with their own access arrangements."
+          ]
+        },
+        {
+          "heading": "Verify before you travel",
+          "paragraphs": [
+            "Hours, fees, access rules and sea conditions change and are not always confirmed by a manager. The guide deliberately avoids publishing unconfirmed tariffs or gate times. Confirm the current entrance, conditions and any charge with the site manager or the relevant operator before relying on this information."
+          ]
+        },
+        {
+          "heading": "No liability",
+          "paragraphs": [
+            "The guide is provided \"as is\" without warranty. It is not responsible for any decision, loss, injury or cost arising from use of the information, including access changes, weather, sea conditions or third-party services."
+          ]
+        },
+        {
+          "heading": "Intellectual property",
+          "paragraphs": [
+            "The written guide text is published by this project. The historic photograph on the site is by iMahesh / I.Mahesh, licensed CC BY-SA 4.0, with separate attribution shown beside it. Other trademarks, place names and brand names belong to their respective owners."
+          ]
+        },
+        {
+          "heading": "External links",
+          "paragraphs": [
+            "Links to third-party sites, maps and official portals are provided for convenience. Their content and policies are outside this guide's control and do not imply endorsement."
+          ]
+        },
+        {
+          "heading": "Changes",
+          "paragraphs": [
+            "These terms may change. The date at the top shows the latest revision. Continued use after a change means acceptance of the revised terms."
+          ]
+        }
+      ]
+    },
+    "cookie-settings": {
+      "title": "Cookie Settings",
+      "updated": "Updated 5 November 2026",
+      "intro": "This page explains the cookies and similar technologies used by this guide so you can understand and manage them.",
+      "sections": [
+        {
+          "heading": "What a cookie is",
+          "paragraphs": [
+            "A cookie is a small text file placed on your device by a website or its service providers. Similar technologies include local storage and server-side identifiers used for security and measurement."
+          ]
+        },
+        {
+          "heading": "Cookies we use",
+          "bullets": [
+            "Strictly necessary: Cloudflare sets cookies and uses connection data for security, delivery and protection against abuse. These cannot be switched off in the page.",
+            "Analytics: Google Analytics sets cookies to measure page use; Cloudflare Web Analytics uses a beacon to measure visits and performance. Both help understand which guides are useful, but they are not required to read the content."
+          ]
+        },
+        {
+          "heading": "Managing cookies",
+          "paragraphs": [
+            "This site does not currently offer an in-page consent switch for analytics cookies. To control them, use your browser or device settings to block or delete cookies from sinquerimfort.com, google.com and cloudflare.com. Blocking analytics cookies will not stop you reading the guide."
+          ]
+        },
+        {
+          "heading": "Third-party policies",
+          "paragraphs": [
+            "For details, see Google's and Cloudflare's cookie and privacy policies, linked from the Privacy Policy page."
+          ]
+        }
+      ]
+    }
   }
 };
